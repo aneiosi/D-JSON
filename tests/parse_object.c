@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -28,21 +28,21 @@
 #include "unity/src/unity.h"
 #include "common.h"
 
-static cJSON item[1];
+static BC_JSON item[1];
 
-static void assert_is_object(cJSON *object_item)
+static void assert_is_object(BC_JSON *object_item)
 {
     TEST_ASSERT_NOT_NULL_MESSAGE(object_item, "Item is NULL.");
 
     assert_not_in_list(object_item);
-    assert_has_type(object_item, cJSON_Object);
+    assert_has_type(object_item, BC_JSON_Object);
     assert_has_no_reference(object_item);
     assert_has_no_const_string(object_item);
     assert_has_no_valuestring(object_item);
     assert_has_no_string(object_item);
 }
 
-static void assert_is_child(cJSON *child_item, const char *name, int type)
+static void assert_is_child(BC_JSON *child_item, const char *name, int type)
 {
     TEST_ASSERT_NOT_NULL_MESSAGE(child_item, "Child item is NULL.");
     TEST_ASSERT_NOT_NULL_MESSAGE(child_item->string, "Child item doesn't have a name.");
@@ -88,42 +88,42 @@ static void parse_object_should_parse_objects_with_one_element(void)
 {
 
     assert_parse_object("{\"one\":1}");
-    assert_is_child(item->child, "one", cJSON_Number);
+    assert_is_child(item->child, "one", JSON_TYPE.NUMBER);
     reset(item);
 
     assert_parse_object("{\"hello\":\"world!\"}");
-    assert_is_child(item->child, "hello", cJSON_String);
+    assert_is_child(item->child, "hello", BC_JSON_String);
     reset(item);
 
     assert_parse_object("{\"array\":[]}");
-    assert_is_child(item->child, "array", cJSON_Array);
+    assert_is_child(item->child, "array", BC_JSON_Array);
     reset(item);
 
     assert_parse_object("{\"null\":null}");
-    assert_is_child(item->child, "null", cJSON_NULL);
+    assert_is_child(item->child, "null", BC_JSON_NULL);
     reset(item);
 }
 
 static void parse_object_should_parse_objects_with_multiple_elements(void)
 {
     assert_parse_object("{\"one\":1\t,\t\"two\"\n:2, \"three\":3}");
-    assert_is_child(item->child, "one", cJSON_Number);
-    assert_is_child(item->child->next, "two", cJSON_Number);
-    assert_is_child(item->child->next->next, "three", cJSON_Number);
+    assert_is_child(item->child, "one", JSON_TYPE.NUMBER);
+    assert_is_child(item->child->next, "two", JSON_TYPE.NUMBER);
+    assert_is_child(item->child->next->next, "three", JSON_TYPE.NUMBER);
     reset(item);
 
     {
         size_t i = 0;
-        cJSON *node = NULL;
+        BC_JSON *node = NULL;
         int expected_types[7] =
         {
-            cJSON_Number,
-            cJSON_NULL,
-            cJSON_True,
-            cJSON_False,
-            cJSON_Array,
-            cJSON_String,
-            cJSON_Object
+            JSON_TYPE.NUMBER,
+            BC_JSON_NULL,
+            BC_JSON_True,
+            BC_JSON_False,
+            BC_JSON_Array,
+            BC_JSON_String,
+            BC_JSON_Object
         };
         const char *expected_names[7] =
         {
@@ -164,8 +164,8 @@ static void parse_object_should_not_parse_non_objects(void)
 
 int CJSON_CDECL main(void)
 {
-    /* initialize cJSON item */
-    memset(item, 0, sizeof(cJSON));
+    /* initialize BC_JSON item */
+    memset(item, 0, sizeof(BC_JSON));
 
     UNITY_BEGIN();
     RUN_TEST(parse_object_should_parse_empty_objects);

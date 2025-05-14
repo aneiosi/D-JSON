@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,15 @@
 #include "unity/src/unity.h"
 #include "common.h"
 
-static cJSON item[1];
+static BC_JSON item[1];
 
-static void assert_is_string(cJSON *string_item)
+static void assert_is_string(BC_JSON *string_item)
 {
     TEST_ASSERT_NOT_NULL_MESSAGE(string_item, "Item is NULL.");
 
     assert_not_in_list(string_item);
     assert_has_no_child(string_item);
-    assert_has_type(string_item, cJSON_String);
+    assert_has_type(string_item, BC_JSON_String);
     assert_has_no_reference(string_item);
     assert_has_no_const_string(string_item);
     assert_has_valuestring(string_item);
@@ -52,9 +52,9 @@ static void assert_parse_string(const char *string, const char *expected)
 
     TEST_ASSERT_TRUE_MESSAGE(parse_string(item, &buffer), "Couldn't parse string.");
     assert_is_string(item);
-    TEST_ASSERT_EQUAL_STRING_MESSAGE(expected, item->valuestring, "The parsed result isn't as expected.");
-    global_hooks.deallocate(item->valuestring);
-    item->valuestring = NULL;
+    TEST_ASSERT_EQUAL_STRING_MESSAGE(expected, item->value_string, "The parsed result isn't as expected.");
+    global_hooks.deallocate(item->value_string);
+    item->value_string = NULL;
 }
 
 static void assert_not_parse_string(const char * const string)
@@ -121,8 +121,8 @@ static void parse_string_should_parse_bug_94(void)
 
 int CJSON_CDECL main(void)
 {
-    /* initialize cJSON item and error pointer */
-    memset(item, 0, sizeof(cJSON));
+    /* initialize BC_JSON item and error pointer */
+    memset(item, 0, sizeof(BC_JSON));
 
     UNITY_BEGIN();
     RUN_TEST(parse_string_should_parse_strings);

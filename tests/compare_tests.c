@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -24,38 +24,38 @@
 #include "unity/src/unity.h"
 #include "common.h"
 
-static cJSON_bool compare_from_string(const char * const a, const char * const b, const cJSON_bool case_sensitive)
+static BC_JSON_bool compare_from_string(const char * const a, const char * const b, const BC_JSON_bool case_sensitive)
 {
-    cJSON *a_json = NULL;
-    cJSON *b_json = NULL;
-    cJSON_bool result = false;
+    BC_JSON *a_json = NULL;
+    BC_JSON *b_json = NULL;
+    BC_JSON_bool result = false;
 
-    a_json = cJSON_Parse(a);
+    a_json = BC_JSON_Parse(a);
     TEST_ASSERT_NOT_NULL_MESSAGE(a_json, "Failed to parse a.");
-    b_json = cJSON_Parse(b);
+    b_json = BC_JSON_Parse(b);
     TEST_ASSERT_NOT_NULL_MESSAGE(b_json, "Failed to parse b.");
 
-    result = cJSON_Compare(a_json, b_json, case_sensitive);
+    result = BC_JSON_Compare(a_json, b_json, case_sensitive);
 
-    cJSON_Delete(a_json);
-    cJSON_Delete(b_json);
+    BC_JSON_Delete(a_json);
+    BC_JSON_Delete(b_json);
 
     return result;
 }
 
 static void cjson_compare_should_compare_null_pointer_as_not_equal(void)
 {
-    TEST_ASSERT_FALSE(cJSON_Compare(NULL, NULL, true));
-    TEST_ASSERT_FALSE(cJSON_Compare(NULL, NULL, false));
+    TEST_ASSERT_FALSE(BC_JSON_Compare(NULL, NULL, true));
+    TEST_ASSERT_FALSE(BC_JSON_Compare(NULL, NULL, false));
 }
 
 static void cjson_compare_should_compare_invalid_as_not_equal(void)
 {
-    cJSON invalid[1];
+    BC_JSON invalid[1];
     memset(invalid, '\0', sizeof(invalid));
 
-    TEST_ASSERT_FALSE(cJSON_Compare(invalid, invalid, false));
-    TEST_ASSERT_FALSE(cJSON_Compare(invalid, invalid, true));
+    TEST_ASSERT_FALSE(BC_JSON_Compare(invalid, invalid, false));
+    TEST_ASSERT_FALSE(BC_JSON_Compare(invalid, invalid, true));
 }
 
 static void cjson_compare_should_compare_numbers(void)
@@ -100,13 +100,13 @@ static void cjson_compare_should_compare_null(void)
 
 static void cjson_compare_should_not_accept_invalid_types(void)
 {
-    cJSON invalid[1];
+    BC_JSON invalid[1];
     memset(invalid, '\0', sizeof(invalid));
 
-    invalid->type = cJSON_Number | cJSON_String;
+    invalid->type = JSON_TYPE.NUMBER | BC_JSON_String;
 
-    TEST_ASSERT_FALSE(cJSON_Compare(invalid, invalid, true));
-    TEST_ASSERT_FALSE(cJSON_Compare(invalid, invalid, false));
+    TEST_ASSERT_FALSE(BC_JSON_Compare(invalid, invalid, true));
+    TEST_ASSERT_FALSE(BC_JSON_Compare(invalid, invalid, false));
 }
 
 static void cjson_compare_should_compare_strings(void)
@@ -120,22 +120,22 @@ static void cjson_compare_should_compare_strings(void)
 
 static void cjson_compare_should_compare_raw(void)
 {
-    cJSON *raw1 = NULL;
-    cJSON *raw2 = NULL;
+    BC_JSON *raw1 = NULL;
+    BC_JSON *raw2 = NULL;
 
-    raw1 = cJSON_Parse("\"[true, false]\"");
+    raw1 = BC_JSON_Parse("\"[true, false]\"");
     TEST_ASSERT_NOT_NULL(raw1);
-    raw2 = cJSON_Parse("\"[true, false]\"");
+    raw2 = BC_JSON_Parse("\"[true, false]\"");
     TEST_ASSERT_NOT_NULL(raw2);
 
-    raw1->type = cJSON_Raw;
-    raw2->type = cJSON_Raw;
+    raw1->type = BC_JSON_Raw;
+    raw2->type = BC_JSON_Raw;
 
-    TEST_ASSERT_TRUE(cJSON_Compare(raw1, raw2, true));
-    TEST_ASSERT_TRUE(cJSON_Compare(raw1, raw2, false));
+    TEST_ASSERT_TRUE(BC_JSON_Compare(raw1, raw2, true));
+    TEST_ASSERT_TRUE(BC_JSON_Compare(raw1, raw2, false));
 
-    cJSON_Delete(raw1);
-    cJSON_Delete(raw2);
+    BC_JSON_Delete(raw1);
+    BC_JSON_Delete(raw2);
 }
 
 static void cjson_compare_should_compare_arrays(void)

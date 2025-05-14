@@ -1,4 +1,4 @@
-option(ENABLE_FUZZING "Create executables and targets for fuzzing cJSON with afl." Off)
+option(ENABLE_FUZZING "Create executables and targets for fuzzing BC_JSON with afl." Off)
 if (ENABLE_FUZZING)
     find_program(AFL_FUZZ afl-fuzz)
     if ("${AFL_FUZZ}" MATCHES "AFL_FUZZ-NOTFOUND")
@@ -31,4 +31,3 @@ if(ENABLE_CJSON_TEST)
     ADD_EXECUTABLE(fuzz_main fuzz_main.c cjson_read_fuzzer.c)
     TARGET_LINK_LIBRARIES(fuzz_main cjson)
 endif()
-

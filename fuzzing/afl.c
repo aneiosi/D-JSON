@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../cJSON.h"
+#include "../BC_JSON.h"
 
 static char *read_file(const char *filename)
 {
@@ -85,7 +85,7 @@ cleanup:
 int main(int argc, char** argv)
 {
     const char *filename = NULL;
-    cJSON *item = NULL;
+    BC_JSON *item = NULL;
     char *json = NULL;
     int status = EXIT_FAILURE;
     char *printed_json = NULL;
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
         status = EXIT_FAILURE;
         goto cleanup;
     }
-    item = cJSON_Parse(json + 2);
+    item = BC_JSON_Parse(json + 2);
     if (item == NULL)
     {
         goto cleanup;
@@ -130,18 +130,18 @@ int main(int argc, char** argv)
         if (json[0] == 'b')
         {
             /* buffered printing */
-            printed_json = cJSON_PrintBuffered(item, 1, do_format);
+            printed_json = BC_JSON_PrintBuffered(item, 1, do_format);
         }
         else
         {
             /* unbuffered printing */
             if (do_format)
             {
-                printed_json = cJSON_Print(item);
+                printed_json = BC_JSON_Print(item);
             }
             else
             {
-                printed_json = cJSON_PrintUnformatted(item);
+                printed_json = BC_JSON_PrintUnformatted(item);
             }
         }
         if (printed_json == NULL)
@@ -155,7 +155,7 @@ int main(int argc, char** argv)
 cleanup:
     if (item != NULL)
     {
-        cJSON_Delete(item);
+        BC_JSON_Delete(item);
         item = NULL;
     }
     if (json != NULL)

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -30,9 +30,9 @@
 
 static void cjson_array_foreach_should_loop_over_arrays(void)
 {
-    cJSON array[1];
-    cJSON elements[10];
-    cJSON *element_pointer = NULL;
+    BC_JSON array[1];
+    BC_JSON elements[10];
+    BC_JSON *element_pointer = NULL;
     size_t i = 0;
 
     memset(array, 0, sizeof(array));
@@ -49,7 +49,7 @@ static void cjson_array_foreach_should_loop_over_arrays(void)
     }
 
     i = 0;
-    cJSON_ArrayForEach(element_pointer, array)
+    BC_JSON_ArrayForEach(element_pointer, array)
     {
         TEST_ASSERT_TRUE_MESSAGE(element_pointer == &elements[i], "Not iterating over array properly");
         i++;
@@ -58,151 +58,151 @@ static void cjson_array_foreach_should_loop_over_arrays(void)
 
 static void cjson_array_foreach_should_not_dereference_null_pointer(void)
 {
-    cJSON *array = NULL;
-    cJSON *element = NULL;
-    cJSON_ArrayForEach(element, array);
+    BC_JSON *array = NULL;
+    BC_JSON *element = NULL;
+    BC_JSON_ArrayForEach(element, array);
 }
 
 static void cjson_get_object_item_should_get_object_items(void)
 {
-    cJSON *item = NULL;
-    cJSON *found = NULL;
+    BC_JSON *item = NULL;
+    BC_JSON *found = NULL;
 
-    item = cJSON_Parse("{\"one\":1, \"Two\":2, \"tHree\":3}");
+    item = BC_JSON_Parse("{\"one\":1, \"Two\":2, \"tHree\":3}");
 
-    found = cJSON_GetObjectItem(NULL, "test");
+    found = BC_JSON_GetObjectItem(NULL, "test");
     TEST_ASSERT_NULL_MESSAGE(found, "Failed to fail on NULL pointer.");
 
-    found = cJSON_GetObjectItem(item, NULL);
+    found = BC_JSON_GetObjectItem(item, NULL);
     TEST_ASSERT_NULL_MESSAGE(found, "Failed to fail on NULL string.");
 
-    found = cJSON_GetObjectItem(item, "one");
+    found = BC_JSON_GetObjectItem(item, "one");
     TEST_ASSERT_NOT_NULL_MESSAGE(found, "Failed to find first item.");
-    TEST_ASSERT_EQUAL_DOUBLE(found->valuedouble, 1);
+    TEST_ASSERT_EQUAL_DOUBLE(found->value_number, 1);
 
-    found = cJSON_GetObjectItem(item, "tWo");
+    found = BC_JSON_GetObjectItem(item, "tWo");
     TEST_ASSERT_NOT_NULL_MESSAGE(found, "Failed to find first item.");
-    TEST_ASSERT_EQUAL_DOUBLE(found->valuedouble, 2);
+    TEST_ASSERT_EQUAL_DOUBLE(found->value_number, 2);
 
-    found = cJSON_GetObjectItem(item, "three");
+    found = BC_JSON_GetObjectItem(item, "three");
     TEST_ASSERT_NOT_NULL_MESSAGE(found, "Failed to find item.");
-    TEST_ASSERT_EQUAL_DOUBLE(found->valuedouble, 3);
+    TEST_ASSERT_EQUAL_DOUBLE(found->value_number, 3);
 
-    found = cJSON_GetObjectItem(item, "four");
+    found = BC_JSON_GetObjectItem(item, "four");
     TEST_ASSERT_NULL_MESSAGE(found, "Should not find something that isn't there.");
 
-    cJSON_Delete(item);
+    BC_JSON_Delete(item);
 }
 
 static void cjson_get_object_item_case_sensitive_should_get_object_items(void)
 {
-    cJSON *item = NULL;
-    cJSON *found = NULL;
+    BC_JSON *item = NULL;
+    BC_JSON *found = NULL;
 
-    item = cJSON_Parse("{\"one\":1, \"Two\":2, \"tHree\":3}");
+    item = BC_JSON_Parse("{\"one\":1, \"Two\":2, \"tHree\":3}");
 
-    found = cJSON_GetObjectItemCaseSensitive(NULL, "test");
+    found = BC_JSON_GetObjectItemCaseSensitive(NULL, "test");
     TEST_ASSERT_NULL_MESSAGE(found, "Failed to fail on NULL pointer.");
 
-    found = cJSON_GetObjectItemCaseSensitive(item, NULL);
+    found = BC_JSON_GetObjectItemCaseSensitive(item, NULL);
     TEST_ASSERT_NULL_MESSAGE(found, "Failed to fail on NULL string.");
 
-    found = cJSON_GetObjectItemCaseSensitive(item, "one");
+    found = BC_JSON_GetObjectItemCaseSensitive(item, "one");
     TEST_ASSERT_NOT_NULL_MESSAGE(found, "Failed to find first item.");
-    TEST_ASSERT_EQUAL_DOUBLE(found->valuedouble, 1);
+    TEST_ASSERT_EQUAL_DOUBLE(found->value_number, 1);
 
-    found = cJSON_GetObjectItemCaseSensitive(item, "Two");
+    found = BC_JSON_GetObjectItemCaseSensitive(item, "Two");
     TEST_ASSERT_NOT_NULL_MESSAGE(found, "Failed to find first item.");
-    TEST_ASSERT_EQUAL_DOUBLE(found->valuedouble, 2);
+    TEST_ASSERT_EQUAL_DOUBLE(found->value_number, 2);
 
-    found = cJSON_GetObjectItemCaseSensitive(item, "tHree");
+    found = BC_JSON_GetObjectItemCaseSensitive(item, "tHree");
     TEST_ASSERT_NOT_NULL_MESSAGE(found, "Failed to find item.");
-    TEST_ASSERT_EQUAL_DOUBLE(found->valuedouble, 3);
+    TEST_ASSERT_EQUAL_DOUBLE(found->value_number, 3);
 
-    found = cJSON_GetObjectItemCaseSensitive(item, "One");
+    found = BC_JSON_GetObjectItemCaseSensitive(item, "One");
     TEST_ASSERT_NULL_MESSAGE(found, "Should not find something that isn't there.");
 
-    cJSON_Delete(item);
+    BC_JSON_Delete(item);
 }
 
 static void cjson_get_object_item_should_not_crash_with_array(void)
 {
-    cJSON *array = NULL;
-    cJSON *found = NULL;
-    array = cJSON_Parse("[1]");
+    BC_JSON *array = NULL;
+    BC_JSON *found = NULL;
+    array = BC_JSON_Parse("[1]");
 
-    found = cJSON_GetObjectItem(array, "name");
+    found = BC_JSON_GetObjectItem(array, "name");
     TEST_ASSERT_NULL(found);
 
-    cJSON_Delete(array);
+    BC_JSON_Delete(array);
 }
 
 static void cjson_get_object_item_case_sensitive_should_not_crash_with_array(void)
 {
-    cJSON *array = NULL;
-    cJSON *found = NULL;
-    array = cJSON_Parse("[1]");
+    BC_JSON *array = NULL;
+    BC_JSON *found = NULL;
+    array = BC_JSON_Parse("[1]");
 
-    found = cJSON_GetObjectItemCaseSensitive(array, "name");
+    found = BC_JSON_GetObjectItemCaseSensitive(array, "name");
     TEST_ASSERT_NULL(found);
 
-    cJSON_Delete(array);
+    BC_JSON_Delete(array);
 }
 
 static void typecheck_functions_should_check_type(void)
 {
-    cJSON invalid[1];
-    cJSON item[1];
-    invalid->type = cJSON_Invalid;
-    invalid->type |= cJSON_StringIsConst;
-    item->type = cJSON_False;
-    item->type |= cJSON_StringIsConst;
+    BC_JSON invalid[1];
+    BC_JSON item[1];
+    invalid->type = BC_JSON_Invalid;
+    invalid->type |= BC_JSON_StringIsConst;
+    item->type = BC_JSON_False;
+    item->type |= BC_JSON_StringIsConst;
 
-    TEST_ASSERT_FALSE(cJSON_IsInvalid(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsInvalid(item));
-    TEST_ASSERT_TRUE(cJSON_IsInvalid(invalid));
+    TEST_ASSERT_FALSE(BC_JSON_IsInvalid(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsInvalid(item));
+    TEST_ASSERT_TRUE(BC_JSON_IsInvalid(invalid));
 
-    item->type = cJSON_False | cJSON_StringIsConst;
-    TEST_ASSERT_FALSE(cJSON_IsFalse(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsFalse(invalid));
-    TEST_ASSERT_TRUE(cJSON_IsFalse(item));
-    TEST_ASSERT_TRUE(cJSON_IsBool(item));
+    item->type = BC_JSON_False | BC_JSON_StringIsConst;
+    TEST_ASSERT_FALSE(BC_JSON_IsFalse(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsFalse(invalid));
+    TEST_ASSERT_TRUE(BC_JSON_IsFalse(item));
+    TEST_ASSERT_TRUE(BC_JSON_IsBool(item));
 
-    item->type = cJSON_True | cJSON_StringIsConst;
-    TEST_ASSERT_FALSE(cJSON_IsTrue(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsTrue(invalid));
-    TEST_ASSERT_TRUE(cJSON_IsTrue(item));
-    TEST_ASSERT_TRUE(cJSON_IsBool(item));
+    item->type = BC_JSON_True | BC_JSON_StringIsConst;
+    TEST_ASSERT_FALSE(BC_JSON_IsTrue(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsTrue(invalid));
+    TEST_ASSERT_TRUE(BC_JSON_IsTrue(item));
+    TEST_ASSERT_TRUE(BC_JSON_IsBool(item));
 
-    item->type = cJSON_NULL | cJSON_StringIsConst;
-    TEST_ASSERT_FALSE(cJSON_IsNull(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsNull(invalid));
-    TEST_ASSERT_TRUE(cJSON_IsNull(item));
+    item->type = BC_JSON_NULL | BC_JSON_StringIsConst;
+    TEST_ASSERT_FALSE(BC_JSON_IsNull(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsNull(invalid));
+    TEST_ASSERT_TRUE(BC_JSON_IsNull(item));
 
-    item->type = cJSON_Number | cJSON_StringIsConst;
-    TEST_ASSERT_FALSE(cJSON_IsNumber(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsNumber(invalid));
-    TEST_ASSERT_TRUE(cJSON_IsNumber(item));
+    item->type = JSON_TYPE.NUMBER | BC_JSON_StringIsConst;
+    TEST_ASSERT_FALSE(BC_JSON_IsNumber(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsNumber(invalid));
+    TEST_ASSERT_TRUE(BC_JSON_IsNumber(item));
 
-    item->type = cJSON_String | cJSON_StringIsConst;
-    TEST_ASSERT_FALSE(cJSON_IsString(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsString(invalid));
-    TEST_ASSERT_TRUE(cJSON_IsString(item));
+    item->type = BC_JSON_String | BC_JSON_StringIsConst;
+    TEST_ASSERT_FALSE(BC_JSON_IsString(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsString(invalid));
+    TEST_ASSERT_TRUE(BC_JSON_IsString(item));
 
-    item->type = cJSON_Array | cJSON_StringIsConst;
-    TEST_ASSERT_FALSE(cJSON_IsArray(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsArray(invalid));
-    TEST_ASSERT_TRUE(cJSON_IsArray(item));
+    item->type = BC_JSON_Array | BC_JSON_StringIsConst;
+    TEST_ASSERT_FALSE(BC_JSON_IsArray(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsArray(invalid));
+    TEST_ASSERT_TRUE(BC_JSON_IsArray(item));
 
-    item->type = cJSON_Object | cJSON_StringIsConst;
-    TEST_ASSERT_FALSE(cJSON_IsObject(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsObject(invalid));
-    TEST_ASSERT_TRUE(cJSON_IsObject(item));
+    item->type = BC_JSON_Object | BC_JSON_StringIsConst;
+    TEST_ASSERT_FALSE(BC_JSON_IsObject(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsObject(invalid));
+    TEST_ASSERT_TRUE(BC_JSON_IsObject(item));
 
-    item->type = cJSON_Raw | cJSON_StringIsConst;
-    TEST_ASSERT_FALSE(cJSON_IsRaw(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsRaw(invalid));
-    TEST_ASSERT_TRUE(cJSON_IsRaw(item));
+    item->type = BC_JSON_Raw | BC_JSON_StringIsConst;
+    TEST_ASSERT_FALSE(BC_JSON_IsRaw(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsRaw(invalid));
+    TEST_ASSERT_TRUE(BC_JSON_IsRaw(item));
 }
 
 static void cjson_should_not_parse_to_deeply_nested_jsons(void)
@@ -216,51 +216,47 @@ static void cjson_should_not_parse_to_deeply_nested_jsons(void)
     }
     deep_json[sizeof(deep_json) - 1] = '\0';
 
-    TEST_ASSERT_NULL_MESSAGE(cJSON_Parse(deep_json), "To deep JSONs should not be parsed.");
+    TEST_ASSERT_NULL_MESSAGE(BC_JSON_Parse(deep_json), "To deep JSONs should not be parsed.");
 }
 
 static void cjson_should_not_follow_too_deep_circular_references(void)
 {
-    cJSON *o = cJSON_CreateArray();
-    cJSON *a = cJSON_CreateArray();
-    cJSON *b = cJSON_CreateArray();
-    cJSON *x;
+    BC_JSON *o = BC_JSON_CreateArray();
+    BC_JSON *a = BC_JSON_CreateArray();
+    BC_JSON *b = BC_JSON_CreateArray();
+    BC_JSON *x;
 
-    cJSON_AddItemToArray(o, a);
-    cJSON_AddItemToArray(a, b);
-    cJSON_AddItemToArray(b, o);
+    BC_JSON_AddItemToArray(o, a);
+    BC_JSON_AddItemToArray(a, b);
+    BC_JSON_AddItemToArray(b, o);
 
-    x = cJSON_Duplicate(o, 1);
+    x = BC_JSON_Duplicate(o, 1);
     TEST_ASSERT_NULL(x);
-    cJSON_DetachItemFromArray(b, 0);
-    cJSON_Delete(o);
+    BC_JSON_DetachItemFromArray(b, 0);
+    BC_JSON_Delete(o);
 }
 
 static void cjson_set_number_value_should_set_numbers(void)
 {
-    cJSON number[1] = {{NULL, NULL, NULL, cJSON_Number, NULL, 0, 0, NULL}};
+    BC_JSON number[1] = {{NULL, NULL, NULL, JSON_TYPE.NUMBER, NULL, 0, 0, NULL}};
 
-    cJSON_SetNumberValue(number, 1.5);
-    TEST_ASSERT_EQUAL(1, number->valueint);
-    TEST_ASSERT_EQUAL_DOUBLE(1.5, number->valuedouble);
+    BC_JSON_SetNumberValue(number, 1.5);
+    TEST_ASSERT_EQUAL_DOUBLE(1.5, number->value_number);
 
-    cJSON_SetNumberValue(number, -1.5);
-    TEST_ASSERT_EQUAL(-1, number->valueint);
-    TEST_ASSERT_EQUAL_DOUBLE(-1.5, number->valuedouble);
+    BC_JSON_SetNumberValue(number, -1.5);
+    TEST_ASSERT_EQUAL_DOUBLE(-1.5, number->value_number);
 
-    cJSON_SetNumberValue(number, 1 + (double)INT_MAX);
-    TEST_ASSERT_EQUAL(INT_MAX, number->valueint);
-    TEST_ASSERT_EQUAL_DOUBLE(1 + (double)INT_MAX, number->valuedouble);
+    BC_JSON_SetNumberValue(number, 1 + (double)INT_MAX);
+    TEST_ASSERT_EQUAL_DOUBLE(1 + (double)INT_MAX, number->value_number);
 
-    cJSON_SetNumberValue(number, -1 + (double)INT_MIN);
-    TEST_ASSERT_EQUAL(INT_MIN, number->valueint);
-    TEST_ASSERT_EQUAL_DOUBLE(-1 + (double)INT_MIN, number->valuedouble);
+    BC_JSON_SetNumberValue(number, -1 + (double)INT_MIN);
+    TEST_ASSERT_EQUAL_DOUBLE(-1 + (double)INT_MIN, number->value_number);
 }
 
 static void cjson_detach_item_via_pointer_should_detach_items(void)
 {
-    cJSON list[4];
-    cJSON parent[1];
+    BC_JSON list[4];
+    BC_JSON parent[1];
 
     memset(list, '\0', sizeof(list));
 
@@ -277,30 +273,30 @@ static void cjson_detach_item_via_pointer_should_detach_items(void)
     parent->child = &list[0];
 
     /* detach in the middle (list[1]) */
-    TEST_ASSERT_TRUE_MESSAGE(cJSON_DetachItemViaPointer(parent, &(list[1])) == &(list[1]), "Failed to detach in the middle.");
+    TEST_ASSERT_TRUE_MESSAGE(BC_JSON_DetachItemViaPointer(parent, &(list[1])) == &(list[1]), "Failed to detach in the middle.");
     TEST_ASSERT_TRUE_MESSAGE((list[1].prev == NULL) && (list[1].next == NULL), "Didn't set pointers of detached item to NULL.");
     TEST_ASSERT_TRUE((list[0].next == &(list[2])) && (list[2].prev == &(list[0])));
 
     /* detach beginning (list[0]) */
-    TEST_ASSERT_TRUE_MESSAGE(cJSON_DetachItemViaPointer(parent, &(list[0])) == &(list[0]), "Failed to detach beginning.");
+    TEST_ASSERT_TRUE_MESSAGE(BC_JSON_DetachItemViaPointer(parent, &(list[0])) == &(list[0]), "Failed to detach beginning.");
     TEST_ASSERT_TRUE_MESSAGE((list[0].prev == NULL) && (list[0].next == NULL), "Didn't set pointers of detached item to NULL.");
     TEST_ASSERT_TRUE_MESSAGE((list[2].prev == &(list[3])) && (parent->child == &(list[2])), "Didn't set the new beginning.");
 
     /* detach end (list[3])*/
-    TEST_ASSERT_TRUE_MESSAGE(cJSON_DetachItemViaPointer(parent, &(list[3])) == &(list[3]), "Failed to detach end.");
+    TEST_ASSERT_TRUE_MESSAGE(BC_JSON_DetachItemViaPointer(parent, &(list[3])) == &(list[3]), "Failed to detach end.");
     TEST_ASSERT_TRUE_MESSAGE((list[3].prev == NULL) && (list[3].next == NULL), "Didn't set pointers of detached item to NULL.");
     TEST_ASSERT_TRUE_MESSAGE((list[2].next == NULL) && (parent->child == &(list[2])), "Didn't set the new end");
 
     /* detach single item (list[2]) */
-    TEST_ASSERT_TRUE_MESSAGE(cJSON_DetachItemViaPointer(parent, &list[2]) == &list[2], "Failed to detach single item.");
+    TEST_ASSERT_TRUE_MESSAGE(BC_JSON_DetachItemViaPointer(parent, &list[2]) == &list[2], "Failed to detach single item.");
     TEST_ASSERT_TRUE_MESSAGE((list[2].prev == NULL) && (list[2].next == NULL), "Didn't set pointers of detached item to NULL.");
     TEST_ASSERT_NULL_MESSAGE(parent->child, "Child of the parent wasn't set to NULL.");
 }
 
 static void cjson_detach_item_via_pointer_should_return_null_if_item_prev_is_null(void)
 {
-    cJSON list[2];
-    cJSON parent[1];
+    BC_JSON list[2];
+    BC_JSON parent[1];
 
     memset(list, '\0', sizeof(list));
 
@@ -308,202 +304,202 @@ static void cjson_detach_item_via_pointer_should_return_null_if_item_prev_is_nul
     list[0].next = &(list[1]);
 
     parent->child = &list[0];
-    TEST_ASSERT_NULL_MESSAGE(cJSON_DetachItemViaPointer(parent, &(list[1])), "Failed to detach in the middle.");
-    TEST_ASSERT_TRUE_MESSAGE(cJSON_DetachItemViaPointer(parent, &(list[0])) == &(list[0]), "Failed to detach in the middle.");
+    TEST_ASSERT_NULL_MESSAGE(BC_JSON_DetachItemViaPointer(parent, &(list[1])), "Failed to detach in the middle.");
+    TEST_ASSERT_TRUE_MESSAGE(BC_JSON_DetachItemViaPointer(parent, &(list[0])) == &(list[0]), "Failed to detach in the middle.");
 }
 
 static void cjson_replace_item_via_pointer_should_replace_items(void)
 {
-    cJSON replacements[3];
-    cJSON *beginning = NULL;
-    cJSON *middle = NULL;
-    cJSON *end = NULL;
-    cJSON *array = NULL;
+    BC_JSON replacements[3];
+    BC_JSON *beginning = NULL;
+    BC_JSON *middle = NULL;
+    BC_JSON *end = NULL;
+    BC_JSON *array = NULL;
 
-    beginning = cJSON_CreateNull();
+    beginning = BC_JSON_CreateNull();
     TEST_ASSERT_NOT_NULL(beginning);
-    middle = cJSON_CreateNull();
+    middle = BC_JSON_CreateNull();
     TEST_ASSERT_NOT_NULL(middle);
-    end = cJSON_CreateNull();
+    end = BC_JSON_CreateNull();
     TEST_ASSERT_NOT_NULL(end);
 
-    array = cJSON_CreateArray();
+    array = BC_JSON_CreateArray();
     TEST_ASSERT_NOT_NULL(array);
 
-    cJSON_AddItemToArray(array, beginning);
-    cJSON_AddItemToArray(array, middle);
-    cJSON_AddItemToArray(array, end);
+    BC_JSON_AddItemToArray(array, beginning);
+    BC_JSON_AddItemToArray(array, middle);
+    BC_JSON_AddItemToArray(array, end);
 
     memset(replacements, '\0', sizeof(replacements));
 
     /* replace beginning */
-    TEST_ASSERT_TRUE(cJSON_ReplaceItemViaPointer(array, beginning, &(replacements[0])));
+    TEST_ASSERT_TRUE(BC_JSON_ReplaceItemViaPointer(array, beginning, &(replacements[0])));
     TEST_ASSERT_TRUE(replacements[0].prev == end);
     TEST_ASSERT_TRUE(replacements[0].next == middle);
     TEST_ASSERT_TRUE(middle->prev == &(replacements[0]));
     TEST_ASSERT_TRUE(array->child == &(replacements[0]));
 
     /* replace middle */
-    TEST_ASSERT_TRUE(cJSON_ReplaceItemViaPointer(array, middle, &(replacements[1])));
+    TEST_ASSERT_TRUE(BC_JSON_ReplaceItemViaPointer(array, middle, &(replacements[1])));
     TEST_ASSERT_TRUE(replacements[1].prev == &(replacements[0]));
     TEST_ASSERT_TRUE(replacements[1].next == end);
     TEST_ASSERT_TRUE(end->prev == &(replacements[1]));
 
     /* replace end */
-    TEST_ASSERT_TRUE(cJSON_ReplaceItemViaPointer(array, end, &(replacements[2])));
+    TEST_ASSERT_TRUE(BC_JSON_ReplaceItemViaPointer(array, end, &(replacements[2])));
     TEST_ASSERT_TRUE(replacements[2].prev == &(replacements[1]));
     TEST_ASSERT_NULL(replacements[2].next);
     TEST_ASSERT_TRUE(replacements[1].next == &(replacements[2]));
 
-    cJSON_free(array);
+    BC_JSON_free(array);
 }
 
 static void cjson_replace_item_in_object_should_preserve_name(void)
 {
-    cJSON root[1] = {{NULL, NULL, NULL, 0, NULL, 0, 0, NULL}};
-    cJSON *child = NULL;
-    cJSON *replacement = NULL;
-    cJSON_bool flag = false;
+    BC_JSON root[1] = {{NULL, NULL, NULL, 0, NULL, 0, 0, NULL}};
+    BC_JSON *child = NULL;
+    BC_JSON *replacement = NULL;
+    BC_JSON_bool flag = false;
 
-    child = cJSON_CreateNumber(1);
+    child = BC_JSON_CreateNumber(1);
     TEST_ASSERT_NOT_NULL(child);
-    replacement = cJSON_CreateNumber(2);
+    replacement = BC_JSON_CreateNumber(2);
     TEST_ASSERT_NOT_NULL(replacement);
 
-    flag = cJSON_AddItemToObject(root, "child", child);
+    flag = BC_JSON_AddItemToObject(root, "child", child);
     TEST_ASSERT_TRUE_MESSAGE(flag, "add item to object failed");
-    cJSON_ReplaceItemInObject(root, "child", replacement);
+    BC_JSON_ReplaceItemInObject(root, "child", replacement);
 
     TEST_ASSERT_TRUE(root->child == replacement);
     TEST_ASSERT_EQUAL_STRING("child", replacement->string);
 
-    cJSON_Delete(replacement);
+    BC_JSON_Delete(replacement);
 }
 
 static void cjson_functions_should_not_crash_with_null_pointers(void)
 {
     char buffer[10];
-    cJSON *item = cJSON_CreateString("item");
-    cJSON *array = cJSON_CreateArray();
-    cJSON *item1 = cJSON_CreateString("item1");
-    cJSON *item2 = cJSON_CreateString("corrupted array item3");
-    cJSON *corruptedString = cJSON_CreateString("corrupted");
-    struct cJSON *originalPrev;
+    BC_JSON *item = BC_JSON_CreateString("item");
+    BC_JSON *array = BC_JSON_CreateArray();
+    BC_JSON *item1 = BC_JSON_CreateString("item1");
+    BC_JSON *item2 = BC_JSON_CreateString("corrupted array item3");
+    BC_JSON *corruptedString = BC_JSON_CreateString("corrupted");
+    struct BC_JSON *originalPrev;
 
     add_item_to_array(array, item1);
     add_item_to_array(array, item2);
 
     originalPrev = item2->prev;
     item2->prev = NULL;
-    free(corruptedString->valuestring);
-    corruptedString->valuestring = NULL;
+    free(corruptedString->value_string);
+    corruptedString->value_string = NULL;
 
-    cJSON_InitHooks(NULL);
-    TEST_ASSERT_NULL(cJSON_Parse(NULL));
-    TEST_ASSERT_NULL(cJSON_ParseWithOpts(NULL, NULL, true));
-    TEST_ASSERT_NULL(cJSON_Print(NULL));
-    TEST_ASSERT_NULL(cJSON_PrintUnformatted(NULL));
-    TEST_ASSERT_NULL(cJSON_PrintBuffered(NULL, 10, true));
-    TEST_ASSERT_FALSE(cJSON_PrintPreallocated(NULL, buffer, sizeof(buffer), true));
-    TEST_ASSERT_FALSE(cJSON_PrintPreallocated(item, NULL, 1, true));
-    cJSON_Delete(NULL);
-    cJSON_GetArraySize(NULL);
-    TEST_ASSERT_NULL(cJSON_GetArrayItem(NULL, 0));
-    TEST_ASSERT_NULL(cJSON_GetObjectItem(NULL, "item"));
-    TEST_ASSERT_NULL(cJSON_GetObjectItem(item, NULL));
-    TEST_ASSERT_NULL(cJSON_GetObjectItemCaseSensitive(NULL, "item"));
-    TEST_ASSERT_NULL(cJSON_GetObjectItemCaseSensitive(item, NULL));
-    TEST_ASSERT_FALSE(cJSON_HasObjectItem(NULL, "item"));
-    TEST_ASSERT_FALSE(cJSON_HasObjectItem(item, NULL));
-    TEST_ASSERT_FALSE(cJSON_IsInvalid(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsFalse(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsTrue(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsBool(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsNull(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsNumber(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsString(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsArray(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsObject(NULL));
-    TEST_ASSERT_FALSE(cJSON_IsRaw(NULL));
-    TEST_ASSERT_NULL(cJSON_CreateString(NULL));
-    TEST_ASSERT_NULL(cJSON_CreateRaw(NULL));
-    TEST_ASSERT_NULL(cJSON_CreateIntArray(NULL, 10));
-    TEST_ASSERT_NULL(cJSON_CreateFloatArray(NULL, 10));
-    TEST_ASSERT_NULL(cJSON_CreateDoubleArray(NULL, 10));
-    TEST_ASSERT_NULL(cJSON_CreateStringArray(NULL, 10));
-    cJSON_AddItemToArray(NULL, item);
-    cJSON_AddItemToArray(item, NULL);
-    cJSON_AddItemToObject(item, "item", NULL);
-    cJSON_AddItemToObject(item, NULL, item);
-    cJSON_AddItemToObject(NULL, "item", item);
-    cJSON_AddItemToObjectCS(item, "item", NULL);
-    cJSON_AddItemToObjectCS(item, NULL, item);
-    cJSON_AddItemToObjectCS(NULL, "item", item);
-    cJSON_AddItemReferenceToArray(NULL, item);
-    cJSON_AddItemReferenceToArray(item, NULL);
-    cJSON_AddItemReferenceToObject(item, "item", NULL);
-    cJSON_AddItemReferenceToObject(item, NULL, item);
-    cJSON_AddItemReferenceToObject(NULL, "item", item);
-    TEST_ASSERT_NULL(cJSON_DetachItemViaPointer(NULL, item));
-    TEST_ASSERT_NULL(cJSON_DetachItemViaPointer(item, NULL));
-    TEST_ASSERT_NULL(cJSON_DetachItemFromArray(NULL, 0));
-    cJSON_DeleteItemFromArray(NULL, 0);
-    TEST_ASSERT_NULL(cJSON_DetachItemFromObject(NULL, "item"));
-    TEST_ASSERT_NULL(cJSON_DetachItemFromObject(item, NULL));
-    TEST_ASSERT_NULL(cJSON_DetachItemFromObjectCaseSensitive(NULL, "item"));
-    TEST_ASSERT_NULL(cJSON_DetachItemFromObjectCaseSensitive(item, NULL));
-    cJSON_DeleteItemFromObject(NULL, "item");
-    cJSON_DeleteItemFromObject(item, NULL);
-    cJSON_DeleteItemFromObjectCaseSensitive(NULL, "item");
-    cJSON_DeleteItemFromObjectCaseSensitive(item, NULL);
-    TEST_ASSERT_FALSE(cJSON_InsertItemInArray(array, 0, NULL));
-    TEST_ASSERT_FALSE(cJSON_InsertItemInArray(array, 1, item));
-    TEST_ASSERT_FALSE(cJSON_InsertItemInArray(NULL, 0, item));
-    TEST_ASSERT_FALSE(cJSON_InsertItemInArray(item, 0, NULL));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemViaPointer(NULL, item, item));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemViaPointer(item, NULL, item));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemViaPointer(item, item, NULL));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemInArray(item, 0, NULL));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemInArray(NULL, 0, item));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemInObject(NULL, "item", item));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemInObject(item, NULL, item));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemInObject(item, "item", NULL));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemInObjectCaseSensitive(NULL, "item", item));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemInObjectCaseSensitive(item, NULL, item));
-    TEST_ASSERT_FALSE(cJSON_ReplaceItemInObjectCaseSensitive(item, "item", NULL));
-    TEST_ASSERT_NULL(cJSON_Duplicate(NULL, true));
-    TEST_ASSERT_FALSE(cJSON_Compare(item, NULL, false));
-    TEST_ASSERT_FALSE(cJSON_Compare(NULL, item, false));
-    TEST_ASSERT_NULL(cJSON_SetValuestring(NULL, "test"));
-    TEST_ASSERT_NULL(cJSON_SetValuestring(corruptedString, "test"));
-    TEST_ASSERT_NULL(cJSON_SetValuestring(item, NULL));
-    cJSON_Minify(NULL);
+    BC_JSON_InitHooks(NULL);
+    TEST_ASSERT_NULL(BC_JSON_Parse(NULL));
+    TEST_ASSERT_NULL(BC_JSON_ParseWithOpts(NULL, NULL, true));
+    TEST_ASSERT_NULL(BC_JSON_Print(NULL));
+    TEST_ASSERT_NULL(BC_JSON_PrintUnformatted(NULL));
+    TEST_ASSERT_NULL(BC_JSON_PrintBuffered(NULL, 10, true));
+    TEST_ASSERT_FALSE(BC_JSON_PrintPreallocated(NULL, buffer, sizeof(buffer), true));
+    TEST_ASSERT_FALSE(BC_JSON_PrintPreallocated(item, NULL, 1, true));
+    BC_JSON_Delete(NULL);
+    BC_JSON_GetArraySize(NULL);
+    TEST_ASSERT_NULL(BC_JSON_GetArrayItem(NULL, 0));
+    TEST_ASSERT_NULL(BC_JSON_GetObjectItem(NULL, "item"));
+    TEST_ASSERT_NULL(BC_JSON_GetObjectItem(item, NULL));
+    TEST_ASSERT_NULL(BC_JSON_GetObjectItemCaseSensitive(NULL, "item"));
+    TEST_ASSERT_NULL(BC_JSON_GetObjectItemCaseSensitive(item, NULL));
+    TEST_ASSERT_FALSE(BC_JSON_HasObjectItem(NULL, "item"));
+    TEST_ASSERT_FALSE(BC_JSON_HasObjectItem(item, NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsInvalid(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsFalse(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsTrue(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsBool(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsNull(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsNumber(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsString(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsArray(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsObject(NULL));
+    TEST_ASSERT_FALSE(BC_JSON_IsRaw(NULL));
+    TEST_ASSERT_NULL(BC_JSON_CreateString(NULL));
+    TEST_ASSERT_NULL(BC_JSON_CreateRaw(NULL));
+    TEST_ASSERT_NULL(BC_JSON_CreateIntArray(NULL, 10));
+    TEST_ASSERT_NULL(BC_JSON_CreateFloatArray(NULL, 10));
+    TEST_ASSERT_NULL(BC_JSON_CreateDoubleArray(NULL, 10));
+    TEST_ASSERT_NULL(BC_JSON_CreateStringArray(NULL, 10));
+    BC_JSON_AddItemToArray(NULL, item);
+    BC_JSON_AddItemToArray(item, NULL);
+    BC_JSON_AddItemToObject(item, "item", NULL);
+    BC_JSON_AddItemToObject(item, NULL, item);
+    BC_JSON_AddItemToObject(NULL, "item", item);
+    BC_JSON_AddItemToObjectCS(item, "item", NULL);
+    BC_JSON_AddItemToObjectCS(item, NULL, item);
+    BC_JSON_AddItemToObjectCS(NULL, "item", item);
+    BC_JSON_AddItemReferenceToArray(NULL, item);
+    BC_JSON_AddItemReferenceToArray(item, NULL);
+    BC_JSON_AddItemReferenceToObject(item, "item", NULL);
+    BC_JSON_AddItemReferenceToObject(item, NULL, item);
+    BC_JSON_AddItemReferenceToObject(NULL, "item", item);
+    TEST_ASSERT_NULL(BC_JSON_DetachItemViaPointer(NULL, item));
+    TEST_ASSERT_NULL(BC_JSON_DetachItemViaPointer(item, NULL));
+    TEST_ASSERT_NULL(BC_JSON_DetachItemFromArray(NULL, 0));
+    BC_JSON_DeleteItemFromArray(NULL, 0);
+    TEST_ASSERT_NULL(BC_JSON_DetachItemFromObject(NULL, "item"));
+    TEST_ASSERT_NULL(BC_JSON_DetachItemFromObject(item, NULL));
+    TEST_ASSERT_NULL(BC_JSON_DetachItemFromObjectCaseSensitive(NULL, "item"));
+    TEST_ASSERT_NULL(BC_JSON_DetachItemFromObjectCaseSensitive(item, NULL));
+    BC_JSON_DeleteItemFromObject(NULL, "item");
+    BC_JSON_DeleteItemFromObject(item, NULL);
+    BC_JSON_DeleteItemFromObjectCaseSensitive(NULL, "item");
+    BC_JSON_DeleteItemFromObjectCaseSensitive(item, NULL);
+    TEST_ASSERT_FALSE(BC_JSON_InsertItemInArray(array, 0, NULL));
+    TEST_ASSERT_FALSE(BC_JSON_InsertItemInArray(array, 1, item));
+    TEST_ASSERT_FALSE(BC_JSON_InsertItemInArray(NULL, 0, item));
+    TEST_ASSERT_FALSE(BC_JSON_InsertItemInArray(item, 0, NULL));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemViaPointer(NULL, item, item));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemViaPointer(item, NULL, item));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemViaPointer(item, item, NULL));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemInArray(item, 0, NULL));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemInArray(NULL, 0, item));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemInObject(NULL, "item", item));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemInObject(item, NULL, item));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemInObject(item, "item", NULL));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemInObjectCaseSensitive(NULL, "item", item));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemInObjectCaseSensitive(item, NULL, item));
+    TEST_ASSERT_FALSE(BC_JSON_ReplaceItemInObjectCaseSensitive(item, "item", NULL));
+    TEST_ASSERT_NULL(BC_JSON_Duplicate(NULL, true));
+    TEST_ASSERT_FALSE(BC_JSON_Compare(item, NULL, false));
+    TEST_ASSERT_FALSE(BC_JSON_Compare(NULL, item, false));
+    TEST_ASSERT_NULL(BC_JSON_SetValuestring(NULL, "test"));
+    TEST_ASSERT_NULL(BC_JSON_SetValuestring(corruptedString, "test"));
+    TEST_ASSERT_NULL(BC_JSON_SetValuestring(item, NULL));
+    BC_JSON_Minify(NULL);
     /* skipped because it is only used via a macro that checks for NULL */
-    /* cJSON_SetNumberHelper(NULL, 0); */
+    /* BC_JSON_SetNumberHelper(NULL, 0); */
 
     /* restore corrupted item2 to delete it */
     item2->prev = originalPrev;
-    cJSON_Delete(corruptedString);
-    cJSON_Delete(array);
-    cJSON_Delete(item);
+    BC_JSON_Delete(corruptedString);
+    BC_JSON_Delete(array);
+    BC_JSON_Delete(item);
 }
 
 static void cjson_set_valuestring_should_return_null_if_strings_overlap(void)
-{       
-    cJSON *obj;
+{
+    BC_JSON *obj;
     char* str;
     char* str2;
 
-    obj =  cJSON_Parse("\"foo0z\"");
-    
-    str =  cJSON_SetValuestring(obj, "abcde");
+    obj =  BC_JSON_Parse("\"foo0z\"");
+
+    str =  BC_JSON_SetValuestring(obj, "abcde");
     str += 1;
     /* The string passed to strcpy overlap which is not allowed.*/
-    str2 = cJSON_SetValuestring(obj, str);
+    str2 = BC_JSON_SetValuestring(obj, str);
     /* If it overlaps, the string will be messed up.*/
     TEST_ASSERT_TRUE(strcmp(str, "bcde") == 0);
     TEST_ASSERT_NULL(str2);
-    cJSON_Delete(obj);
+    BC_JSON_Delete(obj);
 }
 
 static void *CJSON_CDECL failing_realloc(void *pointer, size_t size)
@@ -548,99 +544,99 @@ static void skip_utf8_bom_should_not_skip_bom_if_not_at_beginning(void)
 
 static void cjson_get_string_value_should_get_a_string(void)
 {
-    cJSON *string = cJSON_CreateString("test");
-    cJSON *number = cJSON_CreateNumber(1);
+    BC_JSON *string = BC_JSON_CreateString("test");
+    BC_JSON *number = BC_JSON_CreateNumber(1);
 
-    TEST_ASSERT_TRUE(cJSON_GetStringValue(string) == string->valuestring);
-    TEST_ASSERT_NULL(cJSON_GetStringValue(number));
-    TEST_ASSERT_NULL(cJSON_GetStringValue(NULL));
+    TEST_ASSERT_TRUE(BC_JSON_GetStringValue(string) == string->value_string);
+    TEST_ASSERT_NULL(BC_JSON_GetStringValue(number));
+    TEST_ASSERT_NULL(BC_JSON_GetStringValue(NULL));
 
-    cJSON_Delete(number);
-    cJSON_Delete(string);
+    BC_JSON_Delete(number);
+    BC_JSON_Delete(string);
 }
 
 static void cjson_get_number_value_should_get_a_number(void)
 {
-    cJSON *string = cJSON_CreateString("test");
-    cJSON *number = cJSON_CreateNumber(1);
+    BC_JSON *string = BC_JSON_CreateString("test");
+    BC_JSON *number = BC_JSON_CreateNumber(1);
 
-    TEST_ASSERT_EQUAL_DOUBLE(cJSON_GetNumberValue(number), number->valuedouble);
-    TEST_ASSERT_DOUBLE_IS_NAN(cJSON_GetNumberValue(string));
-    TEST_ASSERT_DOUBLE_IS_NAN(cJSON_GetNumberValue(NULL));
+    TEST_ASSERT_EQUAL_DOUBLE(BC_JSON_GetNumberValue(number), number->value_number);
+    TEST_ASSERT_DOUBLE_IS_NAN(BC_JSON_GetNumberValue(string));
+    TEST_ASSERT_DOUBLE_IS_NAN(BC_JSON_GetNumberValue(NULL));
 
-    cJSON_Delete(number);
-    cJSON_Delete(string);
+    BC_JSON_Delete(number);
+    BC_JSON_Delete(string);
 }
 
 static void cjson_create_string_reference_should_create_a_string_reference(void)
 {
     const char *string = "I am a string!";
 
-    cJSON *string_reference = cJSON_CreateStringReference(string);
-    TEST_ASSERT_TRUE(string_reference->valuestring == string);
-    TEST_ASSERT_EQUAL_INT(cJSON_IsReference | cJSON_String, string_reference->type);
+    BC_JSON *string_reference = BC_JSON_CreateStringReference(string);
+    TEST_ASSERT_TRUE(string_reference->value_string == string);
+    TEST_ASSERT_EQUAL_INT(BC_JSON_IsReference | BC_JSON_String, string_reference->type);
 
-    cJSON_Delete(string_reference);
+    BC_JSON_Delete(string_reference);
 }
 
 static void cjson_create_object_reference_should_create_an_object_reference(void)
 {
-    cJSON *number_reference = NULL;
-    cJSON *number_object = cJSON_CreateObject();
-    cJSON *number = cJSON_CreateNumber(42);
+    BC_JSON *number_reference = NULL;
+    BC_JSON *number_object = BC_JSON_CreateObject();
+    BC_JSON *number = BC_JSON_CreateNumber(42);
     const char key[] = "number";
 
-    TEST_ASSERT_TRUE(cJSON_IsNumber(number));
-    TEST_ASSERT_TRUE(cJSON_IsObject(number_object));
-    cJSON_AddItemToObjectCS(number_object, key, number);
+    TEST_ASSERT_TRUE(BC_JSON_IsNumber(number));
+    TEST_ASSERT_TRUE(BC_JSON_IsObject(number_object));
+    BC_JSON_AddItemToObjectCS(number_object, key, number);
 
-    number_reference = cJSON_CreateObjectReference(number);
+    number_reference = BC_JSON_CreateObjectReference(number);
     TEST_ASSERT_TRUE(number_reference->child == number);
-    TEST_ASSERT_EQUAL_INT(cJSON_Object | cJSON_IsReference, number_reference->type);
+    TEST_ASSERT_EQUAL_INT(BC_JSON_Object | BC_JSON_IsReference, number_reference->type);
 
-    cJSON_Delete(number_object);
-    cJSON_Delete(number_reference);
+    BC_JSON_Delete(number_object);
+    BC_JSON_Delete(number_reference);
 }
 
 static void cjson_create_array_reference_should_create_an_array_reference(void)
 {
-    cJSON *number_reference = NULL;
-    cJSON *number_array = cJSON_CreateArray();
-    cJSON *number = cJSON_CreateNumber(42);
+    BC_JSON *number_reference = NULL;
+    BC_JSON *number_array = BC_JSON_CreateArray();
+    BC_JSON *number = BC_JSON_CreateNumber(42);
 
-    TEST_ASSERT_TRUE(cJSON_IsNumber(number));
-    TEST_ASSERT_TRUE(cJSON_IsArray(number_array));
-    cJSON_AddItemToArray(number_array, number);
+    TEST_ASSERT_TRUE(BC_JSON_IsNumber(number));
+    TEST_ASSERT_TRUE(BC_JSON_IsArray(number_array));
+    BC_JSON_AddItemToArray(number_array, number);
 
-    number_reference = cJSON_CreateArrayReference(number);
+    number_reference = BC_JSON_CreateArrayReference(number);
     TEST_ASSERT_TRUE(number_reference->child == number);
-    TEST_ASSERT_EQUAL_INT(cJSON_Array | cJSON_IsReference, number_reference->type);
+    TEST_ASSERT_EQUAL_INT(BC_JSON_Array | BC_JSON_IsReference, number_reference->type);
 
-    cJSON_Delete(number_array);
-    cJSON_Delete(number_reference);
+    BC_JSON_Delete(number_array);
+    BC_JSON_Delete(number_reference);
 }
 
 static void cjson_add_item_to_object_or_array_should_not_add_itself(void)
 {
-    cJSON *object = cJSON_CreateObject();
-    cJSON *array = cJSON_CreateArray();
-    cJSON_bool flag = false;
+    BC_JSON *object = BC_JSON_CreateObject();
+    BC_JSON *array = BC_JSON_CreateArray();
+    BC_JSON_bool flag = false;
 
-    flag = cJSON_AddItemToObject(object, "key", object);
+    flag = BC_JSON_AddItemToObject(object, "key", object);
     TEST_ASSERT_FALSE_MESSAGE(flag, "add an object to itself should fail");
 
-    flag = cJSON_AddItemToArray(array, array);
+    flag = BC_JSON_AddItemToArray(array, array);
     TEST_ASSERT_FALSE_MESSAGE(flag, "add an array to itself should fail");
 
-    cJSON_Delete(object);
-    cJSON_Delete(array);
+    BC_JSON_Delete(object);
+    BC_JSON_Delete(array);
 }
 
 static void cjson_add_item_to_object_should_not_use_after_free_when_string_is_aliased(void)
 {
-    cJSON *object = cJSON_CreateObject();
-    cJSON *number = cJSON_CreateNumber(42);
-    char *name = (char *)cJSON_strdup((const unsigned char *)"number", &global_hooks);
+    BC_JSON *object = BC_JSON_CreateObject();
+    BC_JSON *number = BC_JSON_CreateNumber(42);
+    char *name = (char *)BC_JSON_strdup((const unsigned char *)"number", &global_hooks);
 
     TEST_ASSERT_NOT_NULL(object);
     TEST_ASSERT_NOT_NULL(number);
@@ -650,9 +646,9 @@ static void cjson_add_item_to_object_should_not_use_after_free_when_string_is_al
 
     /* The following should not have a use after free
      * that would show up in valgrind or with AddressSanitizer */
-    cJSON_AddItemToObject(object, number->string, number);
+    BC_JSON_AddItemToObject(object, number->string, number);
 
-    cJSON_Delete(object);
+    BC_JSON_Delete(object);
 }
 
 static void cjson_delete_item_from_array_should_not_broken_list_structure(void)
@@ -664,138 +660,138 @@ static void cjson_delete_item_from_array_should_not_broken_list_structure(void)
     char *str2 = NULL;
     char *str3 = NULL;
 
-    cJSON *root = cJSON_Parse("{}");
+    BC_JSON *root = BC_JSON_Parse("{}");
 
-    cJSON *array = cJSON_AddArrayToObject(root, "rd");
-    cJSON *item1 = cJSON_Parse("{\"a\":\"123\"}");
-    cJSON *item2 = cJSON_Parse("{\"b\":\"456\"}");
+    BC_JSON *array = BC_JSON_AddArrayToObject(root, "rd");
+    BC_JSON *item1 = BC_JSON_Parse("{\"a\":\"123\"}");
+    BC_JSON *item2 = BC_JSON_Parse("{\"b\":\"456\"}");
 
-    cJSON_AddItemToArray(array, item1);
-    str1 = cJSON_PrintUnformatted(root);
+    BC_JSON_AddItemToArray(array, item1);
+    str1 = BC_JSON_PrintUnformatted(root);
     TEST_ASSERT_EQUAL_STRING(expected_json1, str1);
     free(str1);
 
-    cJSON_AddItemToArray(array, item2);
-    str2 = cJSON_PrintUnformatted(root);
+    BC_JSON_AddItemToArray(array, item2);
+    str2 = BC_JSON_PrintUnformatted(root);
     TEST_ASSERT_EQUAL_STRING(expected_json2, str2);
     free(str2);
 
     /* this should not broken list structure */
-    cJSON_DeleteItemFromArray(array, 0);
-    str3 = cJSON_PrintUnformatted(root);
+    BC_JSON_DeleteItemFromArray(array, 0);
+    str3 = BC_JSON_PrintUnformatted(root);
     TEST_ASSERT_EQUAL_STRING(expected_json3, str3);
     free(str3);
 
-    cJSON_Delete(root);
+    BC_JSON_Delete(root);
 }
 
 static void cjson_set_valuestring_to_object_should_not_leak_memory(void)
 {
-    cJSON *root = cJSON_Parse("{}");
-    const char *stringvalue = "valuestring could be changed safely";
+    BC_JSON *root = BC_JSON_Parse("{}");
+    const char *stringvalue = "value_string could be changed safely";
     const char *reference_valuestring = "reference item should be freed by yourself";
-    const char *short_valuestring = "shorter valuestring";
-    const char *long_valuestring = "new valuestring which much longer than previous should be changed safely";
-    cJSON *item1 = cJSON_CreateString(stringvalue);
-    cJSON *item2 = cJSON_CreateStringReference(reference_valuestring);
+    const char *short_valuestring = "shorter value_string";
+    const char *long_valuestring = "new value_string which much longer than previous should be changed safely";
+    BC_JSON *item1 = BC_JSON_CreateString(stringvalue);
+    BC_JSON *item2 = BC_JSON_CreateStringReference(reference_valuestring);
     char *ptr1 = NULL;
     char *return_value = NULL;
 
-    cJSON_AddItemToObject(root, "one", item1);
-    cJSON_AddItemToObject(root, "two", item2);
+    BC_JSON_AddItemToObject(root, "one", item1);
+    BC_JSON_AddItemToObject(root, "two", item2);
 
-    ptr1 = item1->valuestring;
-    return_value = cJSON_SetValuestring(cJSON_GetObjectItem(root, "one"), short_valuestring);
+    ptr1 = item1->value_string;
+    return_value = BC_JSON_SetValuestring(BC_JSON_GetObjectItem(root, "one"), short_valuestring);
     TEST_ASSERT_NOT_NULL(return_value);
-    TEST_ASSERT_EQUAL_PTR_MESSAGE(ptr1, return_value, "new valuestring shorter than old should not reallocate memory");
-    TEST_ASSERT_EQUAL_STRING(short_valuestring, cJSON_GetObjectItem(root, "one")->valuestring);
+    TEST_ASSERT_EQUAL_PTR_MESSAGE(ptr1, return_value, "new value_string shorter than old should not reallocate memory");
+    TEST_ASSERT_EQUAL_STRING(short_valuestring, BC_JSON_GetObjectItem(root, "one")->value_string);
 
-    /* we needn't to free the original valuestring manually */
-    ptr1 = item1->valuestring;
-    return_value = cJSON_SetValuestring(cJSON_GetObjectItem(root, "one"), long_valuestring);
+    /* we needn't to free the original value_string manually */
+    ptr1 = item1->value_string;
+    return_value = BC_JSON_SetValuestring(BC_JSON_GetObjectItem(root, "one"), long_valuestring);
     TEST_ASSERT_NOT_NULL(return_value);
-    TEST_ASSERT_NOT_EQUAL_MESSAGE(ptr1, return_value, "new valuestring longer than old should reallocate memory")
-    TEST_ASSERT_EQUAL_STRING(long_valuestring, cJSON_GetObjectItem(root, "one")->valuestring);
+    TEST_ASSERT_NOT_EQUAL_MESSAGE(ptr1, return_value, "new value_string longer than old should reallocate memory")
+    TEST_ASSERT_EQUAL_STRING(long_valuestring, BC_JSON_GetObjectItem(root, "one")->value_string);
 
-    return_value = cJSON_SetValuestring(cJSON_GetObjectItem(root, "two"), long_valuestring);
-    TEST_ASSERT_NULL_MESSAGE(return_value, "valuestring of reference object should not be changed");
-    TEST_ASSERT_EQUAL_STRING(reference_valuestring, cJSON_GetObjectItem(root, "two")->valuestring);
+    return_value = BC_JSON_SetValuestring(BC_JSON_GetObjectItem(root, "two"), long_valuestring);
+    TEST_ASSERT_NULL_MESSAGE(return_value, "value_string of reference object should not be changed");
+    TEST_ASSERT_EQUAL_STRING(reference_valuestring, BC_JSON_GetObjectItem(root, "two")->value_string);
 
-    cJSON_Delete(root);
+    BC_JSON_Delete(root);
 }
 
 static void cjson_set_bool_value_must_not_break_objects(void)
 {
-    cJSON *bobj, *sobj, *oobj, *refobj = NULL;
+    BC_JSON *bobj, *sobj, *oobj, *refobj = NULL;
 
-    TEST_ASSERT_TRUE((cJSON_SetBoolValue(refobj, 1) == cJSON_Invalid));
+    TEST_ASSERT_TRUE((BC_JSON_SetBoolValue(refobj, 1) == BC_JSON_Invalid));
 
-    bobj = cJSON_CreateFalse();
-    TEST_ASSERT_TRUE(cJSON_IsFalse(bobj));
-    TEST_ASSERT_TRUE((cJSON_SetBoolValue(bobj, 1) == cJSON_True));
-    TEST_ASSERT_TRUE(cJSON_IsTrue(bobj));
-    cJSON_SetBoolValue(bobj, 1);
-    TEST_ASSERT_TRUE(cJSON_IsTrue(bobj));
-    TEST_ASSERT_TRUE((cJSON_SetBoolValue(bobj, 0) == cJSON_False));
-    TEST_ASSERT_TRUE(cJSON_IsFalse(bobj));
-    cJSON_SetBoolValue(bobj, 0);
-    TEST_ASSERT_TRUE(cJSON_IsFalse(bobj));
+    bobj = BC_JSON_CreateFalse();
+    TEST_ASSERT_TRUE(BC_JSON_IsFalse(bobj));
+    TEST_ASSERT_TRUE((BC_JSON_SetBoolValue(bobj, 1) == BC_JSON_True));
+    TEST_ASSERT_TRUE(BC_JSON_IsTrue(bobj));
+    BC_JSON_SetBoolValue(bobj, 1);
+    TEST_ASSERT_TRUE(BC_JSON_IsTrue(bobj));
+    TEST_ASSERT_TRUE((BC_JSON_SetBoolValue(bobj, 0) == BC_JSON_False));
+    TEST_ASSERT_TRUE(BC_JSON_IsFalse(bobj));
+    BC_JSON_SetBoolValue(bobj, 0);
+    TEST_ASSERT_TRUE(BC_JSON_IsFalse(bobj));
 
-    sobj = cJSON_CreateString("test");
-    TEST_ASSERT_TRUE(cJSON_IsString(sobj));
-    cJSON_SetBoolValue(sobj, 1);
-    TEST_ASSERT_TRUE(cJSON_IsString(sobj));
-    cJSON_SetBoolValue(sobj, 0);
-    TEST_ASSERT_TRUE(cJSON_IsString(sobj));
+    sobj = BC_JSON_CreateString("test");
+    TEST_ASSERT_TRUE(BC_JSON_IsString(sobj));
+    BC_JSON_SetBoolValue(sobj, 1);
+    TEST_ASSERT_TRUE(BC_JSON_IsString(sobj));
+    BC_JSON_SetBoolValue(sobj, 0);
+    TEST_ASSERT_TRUE(BC_JSON_IsString(sobj));
 
-    oobj = cJSON_CreateObject();
-    TEST_ASSERT_TRUE(cJSON_IsObject(oobj));
-    cJSON_SetBoolValue(oobj, 1);
-    TEST_ASSERT_TRUE(cJSON_IsObject(oobj));
-    cJSON_SetBoolValue(oobj, 0);
-    TEST_ASSERT_TRUE(cJSON_IsObject(oobj));
+    oobj = BC_JSON_CreateObject();
+    TEST_ASSERT_TRUE(BC_JSON_IsObject(oobj));
+    BC_JSON_SetBoolValue(oobj, 1);
+    TEST_ASSERT_TRUE(BC_JSON_IsObject(oobj));
+    BC_JSON_SetBoolValue(oobj, 0);
+    TEST_ASSERT_TRUE(BC_JSON_IsObject(oobj));
 
-    refobj = cJSON_CreateStringReference("conststring");
-    TEST_ASSERT_TRUE(cJSON_IsString(refobj));
-    TEST_ASSERT_TRUE(refobj->type & cJSON_IsReference);
-    cJSON_SetBoolValue(refobj, 1);
-    TEST_ASSERT_TRUE(cJSON_IsString(refobj));
-    TEST_ASSERT_TRUE(refobj->type & cJSON_IsReference);
-    cJSON_SetBoolValue(refobj, 0);
-    TEST_ASSERT_TRUE(cJSON_IsString(refobj));
-    TEST_ASSERT_TRUE(refobj->type & cJSON_IsReference);
-    cJSON_Delete(refobj);
+    refobj = BC_JSON_CreateStringReference("conststring");
+    TEST_ASSERT_TRUE(BC_JSON_IsString(refobj));
+    TEST_ASSERT_TRUE(refobj->type & BC_JSON_IsReference);
+    BC_JSON_SetBoolValue(refobj, 1);
+    TEST_ASSERT_TRUE(BC_JSON_IsString(refobj));
+    TEST_ASSERT_TRUE(refobj->type & BC_JSON_IsReference);
+    BC_JSON_SetBoolValue(refobj, 0);
+    TEST_ASSERT_TRUE(BC_JSON_IsString(refobj));
+    TEST_ASSERT_TRUE(refobj->type & BC_JSON_IsReference);
+    BC_JSON_Delete(refobj);
 
-    refobj = cJSON_CreateObjectReference(oobj);
-    TEST_ASSERT_TRUE(cJSON_IsObject(refobj));
-    TEST_ASSERT_TRUE(refobj->type & cJSON_IsReference);
-    cJSON_SetBoolValue(refobj, 1);
-    TEST_ASSERT_TRUE(cJSON_IsObject(refobj));
-    TEST_ASSERT_TRUE(refobj->type & cJSON_IsReference);
-    cJSON_SetBoolValue(refobj, 0);
-    TEST_ASSERT_TRUE(cJSON_IsObject(refobj));
-    TEST_ASSERT_TRUE(refobj->type & cJSON_IsReference);
-    cJSON_Delete(refobj);
+    refobj = BC_JSON_CreateObjectReference(oobj);
+    TEST_ASSERT_TRUE(BC_JSON_IsObject(refobj));
+    TEST_ASSERT_TRUE(refobj->type & BC_JSON_IsReference);
+    BC_JSON_SetBoolValue(refobj, 1);
+    TEST_ASSERT_TRUE(BC_JSON_IsObject(refobj));
+    TEST_ASSERT_TRUE(refobj->type & BC_JSON_IsReference);
+    BC_JSON_SetBoolValue(refobj, 0);
+    TEST_ASSERT_TRUE(BC_JSON_IsObject(refobj));
+    TEST_ASSERT_TRUE(refobj->type & BC_JSON_IsReference);
+    BC_JSON_Delete(refobj);
 
-    cJSON_Delete(oobj);
-    cJSON_Delete(bobj);
-    cJSON_Delete(sobj);
+    BC_JSON_Delete(oobj);
+    BC_JSON_Delete(bobj);
+    BC_JSON_Delete(sobj);
 }
 
 static void cjson_parse_big_numbers_should_not_report_error(void)
 {
-    cJSON *valid_big_number_json_object1 = cJSON_Parse("{\"a\": true, \"b\": [ null,9999999999999999999999999999999999999999999999912345678901234567]}");
-    cJSON *valid_big_number_json_object2 = cJSON_Parse("{\"a\": true, \"b\": [ null,999999999999999999999999999999999999999999999991234567890.1234567E3]}");
+    BC_JSON *valid_big_number_json_object1 = BC_JSON_Parse("{\"a\": true, \"b\": [ null,9999999999999999999999999999999999999999999999912345678901234567]}");
+    BC_JSON *valid_big_number_json_object2 = BC_JSON_Parse("{\"a\": true, \"b\": [ null,999999999999999999999999999999999999999999999991234567890.1234567E3]}");
     const char *invalid_big_number_json1 = "{\"a\": true, \"b\": [ null,99999999999999999999999999999999999999999999999.1234567890.1234567]}";
     const char *invalid_big_number_json2 = "{\"a\": true, \"b\": [ null,99999999999999999999999999999999999999999999999E1234567890e1234567]}";
 
     TEST_ASSERT_NOT_NULL(valid_big_number_json_object1);
     TEST_ASSERT_NOT_NULL(valid_big_number_json_object2);
-    TEST_ASSERT_NULL_MESSAGE(cJSON_Parse(invalid_big_number_json1), "Invalid big number JSONs should not be parsed.");
-    TEST_ASSERT_NULL_MESSAGE(cJSON_Parse(invalid_big_number_json2), "Invalid big number JSONs should not be parsed.");
+    TEST_ASSERT_NULL_MESSAGE(BC_JSON_Parse(invalid_big_number_json1), "Invalid big number JSONs should not be parsed.");
+    TEST_ASSERT_NULL_MESSAGE(BC_JSON_Parse(invalid_big_number_json2), "Invalid big number JSONs should not be parsed.");
 
-    cJSON_Delete(valid_big_number_json_object1);
-    cJSON_Delete(valid_big_number_json_object2);
+    BC_JSON_Delete(valid_big_number_json_object1);
+    BC_JSON_Delete(valid_big_number_json_object2);
 }
 
 int CJSON_CDECL main(void)

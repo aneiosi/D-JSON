@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -20,44 +20,44 @@
   THE SOFTWARE.
 */
 
-#ifndef cJSON_Utils__h
-#define cJSON_Utils__h
+#ifndef BC_JSON_Utils__h
+#define BC_JSON_Utils__h
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-#include "cJSON.h"
+#include "BC_JSON.h"
 
 /* Implement RFC6901 (https://tools.ietf.org/html/rfc6901) JSON Pointer spec. */
-CJSON_PUBLIC(cJSON *) cJSONUtils_GetPointer(cJSON * const object, const char *pointer);
-CJSON_PUBLIC(cJSON *) cJSONUtils_GetPointerCaseSensitive(cJSON * const object, const char *pointer);
+CJSON_PUBLIC(BC_JSON *) BC_JSONUtils_GetPointer(BC_JSON * const object, const char *pointer);
+CJSON_PUBLIC(BC_JSON *) BC_JSONUtils_GetPointerCaseSensitive(BC_JSON * const object, const char *pointer);
 
 /* Implement RFC6902 (https://tools.ietf.org/html/rfc6902) JSON Patch spec. */
 /* NOTE: This modifies objects in 'from' and 'to' by sorting the elements by their key */
-CJSON_PUBLIC(cJSON *) cJSONUtils_GeneratePatches(cJSON * const from, cJSON * const to);
-CJSON_PUBLIC(cJSON *) cJSONUtils_GeneratePatchesCaseSensitive(cJSON * const from, cJSON * const to);
+CJSON_PUBLIC(BC_JSON *) BC_JSONUtils_GeneratePatches(BC_JSON * const from, BC_JSON * const to);
+CJSON_PUBLIC(BC_JSON *) BC_JSONUtils_GeneratePatchesCaseSensitive(BC_JSON * const from, BC_JSON * const to);
 /* Utility for generating patch array entries. */
-CJSON_PUBLIC(void) cJSONUtils_AddPatchToArray(cJSON * const array, const char * const operation, const char * const path, const cJSON * const value);
+CJSON_PUBLIC(void) BC_JSONUtils_AddPatchToArray(BC_JSON * const array, const char * const operation, const char * const path, const BC_JSON * const value);
 /* Returns 0 for success. */
-CJSON_PUBLIC(int) cJSONUtils_ApplyPatches(cJSON * const object, const cJSON * const patches);
-CJSON_PUBLIC(int) cJSONUtils_ApplyPatchesCaseSensitive(cJSON * const object, const cJSON * const patches);
+CJSON_PUBLIC(int) BC_JSONUtils_ApplyPatches(BC_JSON * const object, const BC_JSON * const patches);
+CJSON_PUBLIC(int) BC_JSONUtils_ApplyPatchesCaseSensitive(BC_JSON * const object, const BC_JSON * const patches);
 
 /*
 // Note that ApplyPatches is NOT atomic on failure. To implement an atomic ApplyPatches, use:
-//int cJSONUtils_AtomicApplyPatches(cJSON **object, cJSON *patches)
+//int BC_JSONUtils_AtomicApplyPatches(BC_JSON **object, BC_JSON *patches)
 //{
-//    cJSON *modme = cJSON_Duplicate(*object, 1);
-//    int error = cJSONUtils_ApplyPatches(modme, patches);
+//    BC_JSON *modme = BC_JSON_Duplicate(*object, 1);
+//    int error = BC_JSONUtils_ApplyPatches(modme, patches);
 //    if (!error)
 //    {
-//        cJSON_Delete(*object);
+//        BC_JSON_Delete(*object);
 //        *object = modme;
 //    }
 //    else
 //    {
-//        cJSON_Delete(modme);
+//        BC_JSON_Delete(modme);
 //    }
 //
 //    return error;
@@ -67,19 +67,19 @@ CJSON_PUBLIC(int) cJSONUtils_ApplyPatchesCaseSensitive(cJSON * const object, con
 
 /* Implement RFC7386 (https://tools.ietf.org/html/rfc7396) JSON Merge Patch spec. */
 /* target will be modified by patch. return value is new ptr for target. */
-CJSON_PUBLIC(cJSON *) cJSONUtils_MergePatch(cJSON *target, const cJSON * const patch);
-CJSON_PUBLIC(cJSON *) cJSONUtils_MergePatchCaseSensitive(cJSON *target, const cJSON * const patch);
+CJSON_PUBLIC(BC_JSON *) BC_JSONUtils_MergePatch(BC_JSON *target, const BC_JSON * const patch);
+CJSON_PUBLIC(BC_JSON *) BC_JSONUtils_MergePatchCaseSensitive(BC_JSON *target, const BC_JSON * const patch);
 /* generates a patch to move from -> to */
 /* NOTE: This modifies objects in 'from' and 'to' by sorting the elements by their key */
-CJSON_PUBLIC(cJSON *) cJSONUtils_GenerateMergePatch(cJSON * const from, cJSON * const to);
-CJSON_PUBLIC(cJSON *) cJSONUtils_GenerateMergePatchCaseSensitive(cJSON * const from, cJSON * const to);
+CJSON_PUBLIC(BC_JSON *) BC_JSONUtils_GenerateMergePatch(BC_JSON * const from, BC_JSON * const to);
+CJSON_PUBLIC(BC_JSON *) BC_JSONUtils_GenerateMergePatchCaseSensitive(BC_JSON * const from, BC_JSON * const to);
 
 /* Given a root object and a target object, construct a pointer from one to the other. */
-CJSON_PUBLIC(char *) cJSONUtils_FindPointerFromObjectTo(const cJSON * const object, const cJSON * const target);
+CJSON_PUBLIC(char *) BC_JSONUtils_FindPointerFromObjectTo(const BC_JSON * const object, const BC_JSON * const target);
 
 /* Sorts the members of the object into alphabetical order. */
-CJSON_PUBLIC(void) cJSONUtils_SortObject(cJSON * const object);
-CJSON_PUBLIC(void) cJSONUtils_SortObjectCaseSensitive(cJSON * const object);
+CJSON_PUBLIC(void) BC_JSONUtils_SortObject(BC_JSON * const object);
+CJSON_PUBLIC(void) BC_JSONUtils_SortObjectCaseSensitive(BC_JSON * const object);
 
 #ifdef __cplusplus
 }

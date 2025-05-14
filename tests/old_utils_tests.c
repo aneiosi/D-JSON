@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 #include "unity/examples/unity_config.h"
 #include "unity/src/unity.h"
 #include "common.h"
-#include "../cJSON_Utils.h"
+#include "../BC_JSON_Utils.h"
 
 /* JSON Apply Merge tests: */
 static const char *merges[15][3] =
@@ -51,7 +51,7 @@ static const char *merges[15][3] =
 
 static void json_pointer_tests(void)
 {
-    cJSON *root = NULL;
+    BC_JSON *root = NULL;
     const char *json=
         "{"
         "\"foo\": [\"bar\", \"baz\"],"
@@ -66,73 +66,73 @@ static void json_pointer_tests(void)
         "\"m~n\": 8"
         "}";
 
-    root = cJSON_Parse(json);
+    root = BC_JSON_Parse(json);
 
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, ""), root);
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/foo"), cJSON_GetObjectItem(root, "foo"));
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/foo/0"), cJSON_GetObjectItem(root, "foo")->child);
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/foo/0"), cJSON_GetObjectItem(root, "foo")->child);
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/"), cJSON_GetObjectItem(root, ""));
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/a~1b"), cJSON_GetObjectItem(root, "a/b"));
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/c%d"), cJSON_GetObjectItem(root, "c%d"));
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/c^f"), cJSON_GetObjectItem(root, "c^f"));
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/c|f"), cJSON_GetObjectItem(root, "c|f"));
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/i\\j"), cJSON_GetObjectItem(root, "i\\j"));
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/k\"l"), cJSON_GetObjectItem(root, "k\"l"));
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/ "), cJSON_GetObjectItem(root, " "));
-    TEST_ASSERT_EQUAL_PTR(cJSONUtils_GetPointer(root, "/m~0n"), cJSON_GetObjectItem(root, "m~n"));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, ""), root);
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/foo"), BC_JSON_GetObjectItem(root, "foo"));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/foo/0"), BC_JSON_GetObjectItem(root, "foo")->child);
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/foo/0"), BC_JSON_GetObjectItem(root, "foo")->child);
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/"), BC_JSON_GetObjectItem(root, ""));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/a~1b"), BC_JSON_GetObjectItem(root, "a/b"));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/c%d"), BC_JSON_GetObjectItem(root, "c%d"));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/c^f"), BC_JSON_GetObjectItem(root, "c^f"));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/c|f"), BC_JSON_GetObjectItem(root, "c|f"));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/i\\j"), BC_JSON_GetObjectItem(root, "i\\j"));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/k\"l"), BC_JSON_GetObjectItem(root, "k\"l"));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/ "), BC_JSON_GetObjectItem(root, " "));
+    TEST_ASSERT_EQUAL_PTR(BC_JSONUtils_GetPointer(root, "/m~0n"), BC_JSON_GetObjectItem(root, "m~n"));
 
-    cJSON_Delete(root);
+    BC_JSON_Delete(root);
 }
 
 static void misc_tests(void)
 {
     /* Misc tests */
     int numbers[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    cJSON *object = NULL;
-    cJSON *object1 = NULL;
-    cJSON *object2 = NULL;
-    cJSON *object3 = NULL;
-    cJSON *object4 = NULL;
-    cJSON *nums = NULL;
-    cJSON *num6 = NULL;
+    BC_JSON *object = NULL;
+    BC_JSON *object1 = NULL;
+    BC_JSON *object2 = NULL;
+    BC_JSON *object3 = NULL;
+    BC_JSON *object4 = NULL;
+    BC_JSON *nums = NULL;
+    BC_JSON *num6 = NULL;
     char *pointer = NULL;
 
     printf("JSON Pointer construct\n");
-    object = cJSON_CreateObject();
-    nums = cJSON_CreateIntArray(numbers, 10);
-    num6 = cJSON_GetArrayItem(nums, 6);
-    cJSON_AddItemToObject(object, "numbers", nums);
+    object = BC_JSON_CreateObject();
+    nums = BC_JSON_CreateIntArray(numbers, 10);
+    num6 = BC_JSON_GetArrayItem(nums, 6);
+    BC_JSON_AddItemToObject(object, "numbers", nums);
 
-    pointer = cJSONUtils_FindPointerFromObjectTo(object, num6);
+    pointer = BC_JSONUtils_FindPointerFromObjectTo(object, num6);
     TEST_ASSERT_EQUAL_STRING("/numbers/6", pointer);
     free(pointer);
 
-    pointer = cJSONUtils_FindPointerFromObjectTo(object, nums);
+    pointer = BC_JSONUtils_FindPointerFromObjectTo(object, nums);
     TEST_ASSERT_EQUAL_STRING("/numbers", pointer);
     free(pointer);
 
-    pointer = cJSONUtils_FindPointerFromObjectTo(object, object);
+    pointer = BC_JSONUtils_FindPointerFromObjectTo(object, object);
     TEST_ASSERT_EQUAL_STRING("", pointer);
     free(pointer);
 
-    object1 = cJSON_CreateObject();
-    object2 = cJSON_CreateString("m~n");
-    cJSON_AddItemToObject(object1, "m~n", object2);
-    pointer = cJSONUtils_FindPointerFromObjectTo(object1, object2);
+    object1 = BC_JSON_CreateObject();
+    object2 = BC_JSON_CreateString("m~n");
+    BC_JSON_AddItemToObject(object1, "m~n", object2);
+    pointer = BC_JSONUtils_FindPointerFromObjectTo(object1, object2);
     TEST_ASSERT_EQUAL_STRING("/m~0n",pointer);
     free(pointer);
 
-    object3 = cJSON_CreateObject();
-    object4 = cJSON_CreateString("m/n");
-    cJSON_AddItemToObject(object3, "m/n", object4);
-    pointer = cJSONUtils_FindPointerFromObjectTo(object3, object4);
+    object3 = BC_JSON_CreateObject();
+    object4 = BC_JSON_CreateString("m/n");
+    BC_JSON_AddItemToObject(object3, "m/n", object4);
+    pointer = BC_JSONUtils_FindPointerFromObjectTo(object3, object4);
     TEST_ASSERT_EQUAL_STRING("/m~1n",pointer);
     free(pointer);
 
-    cJSON_Delete(object);
-    cJSON_Delete(object1);
-    cJSON_Delete(object3);
+    BC_JSON_Delete(object);
+    BC_JSON_Delete(object1);
+    BC_JSON_Delete(object3);
 }
 
 static void sort_tests(void)
@@ -140,19 +140,19 @@ static void sort_tests(void)
     /* Misc tests */
     const char *random = "QWERTYUIOPASDFGHJKLZXCVBNM";
     char buf[2] = {'\0', '\0'};
-    cJSON *sortme = NULL;
+    BC_JSON *sortme = NULL;
     size_t i = 0;
-    cJSON *current_element = NULL;
+    BC_JSON *current_element = NULL;
 
     /* JSON Sort test: */
-    sortme = cJSON_CreateObject();
+    sortme = BC_JSON_CreateObject();
     for (i = 0; i < 26; i++)
     {
         buf[0] = random[i];
-        cJSON_AddItemToObject(sortme, buf, cJSON_CreateNumber(1));
+        BC_JSON_AddItemToObject(sortme, buf, BC_JSON_CreateNumber(1));
     }
 
-    cJSONUtils_SortObject(sortme);
+    BC_JSONUtils_SortObject(sortme);
 
     /* check sorting */
     current_element = sortme->child->next;
@@ -162,7 +162,7 @@ static void sort_tests(void)
         current_element = current_element->next;
     }
 
-    cJSON_Delete(sortme);
+    BC_JSON_Delete(sortme);
 }
 
 static void merge_tests(void)
@@ -175,17 +175,17 @@ static void merge_tests(void)
     printf("JSON Merge Patch tests\n");
     for (i = 0; i < 15; i++)
     {
-        cJSON *object_to_be_merged = cJSON_Parse(merges[i][0]);
-        cJSON *patch = cJSON_Parse(merges[i][1]);
-        patchtext = cJSON_PrintUnformatted(patch);
-        object_to_be_merged = cJSONUtils_MergePatch(object_to_be_merged, patch);
-        after = cJSON_PrintUnformatted(object_to_be_merged);
+        BC_JSON *object_to_be_merged = BC_JSON_Parse(merges[i][0]);
+        BC_JSON *patch = BC_JSON_Parse(merges[i][1]);
+        patchtext = BC_JSON_PrintUnformatted(patch);
+        object_to_be_merged = BC_JSONUtils_MergePatch(object_to_be_merged, patch);
+        after = BC_JSON_PrintUnformatted(object_to_be_merged);
         TEST_ASSERT_EQUAL_STRING(merges[i][2], after);
 
         free(patchtext);
         free(after);
-        cJSON_Delete(object_to_be_merged);
-        cJSON_Delete(patch);
+        BC_JSON_Delete(object_to_be_merged);
+        BC_JSON_Delete(patch);
     }
 }
 
@@ -197,16 +197,16 @@ static void generate_merge_tests(void)
     /* Generate Merge tests: */
     for (i = 0; i < 15; i++)
     {
-        cJSON *from = cJSON_Parse(merges[i][0]);
-        cJSON *to = cJSON_Parse(merges[i][2]);
-        cJSON *patch = cJSONUtils_GenerateMergePatch(from,to);
-        from = cJSONUtils_MergePatch(from,patch);
-        patchedtext = cJSON_PrintUnformatted(from);
+        BC_JSON *from = BC_JSON_Parse(merges[i][0]);
+        BC_JSON *to = BC_JSON_Parse(merges[i][2]);
+        BC_JSON *patch = BC_JSONUtils_GenerateMergePatch(from,to);
+        from = BC_JSONUtils_MergePatch(from,patch);
+        patchedtext = BC_JSON_PrintUnformatted(from);
         TEST_ASSERT_EQUAL_STRING(merges[i][2], patchedtext);
 
-        cJSON_Delete(from);
-        cJSON_Delete(to);
-        cJSON_Delete(patch);
+        BC_JSON_Delete(from);
+        BC_JSON_Delete(to);
+        BC_JSON_Delete(patch);
         free(patchedtext);
     }
 }

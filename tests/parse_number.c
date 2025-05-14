@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,15 @@
 #include "unity/src/unity.h"
 #include "common.h"
 
-static cJSON item[1];
+static BC_JSON item[1];
 
-static void assert_is_number(cJSON *number_item)
+static void assert_is_number(BC_JSON *number_item)
 {
     TEST_ASSERT_NOT_NULL_MESSAGE(number_item, "Item is NULL.");
 
     assert_not_in_list(number_item);
     assert_has_no_child(number_item);
-    assert_has_type(number_item, cJSON_Number);
+    assert_has_type(number_item, JSON_TYPE.NUMBER);
     assert_has_no_reference(number_item);
     assert_has_no_const_string(number_item);
     assert_has_no_valuestring(number_item);
@@ -52,8 +52,7 @@ static void assert_parse_number(const char *string, int integer, double real)
 
     TEST_ASSERT_TRUE(parse_number(item, &buffer));
     assert_is_number(item);
-    TEST_ASSERT_EQUAL_INT(integer, item->valueint);
-    TEST_ASSERT_EQUAL_DOUBLE(real, item->valuedouble);
+    TEST_ASSERT_EQUAL_DOUBLE(real, item->value_number);
 }
 
 static void assert_parse_big_number(const char *string)
@@ -117,8 +116,8 @@ static void parse_number_should_parse_big_numbers(void)
 
 int CJSON_CDECL main(void)
 {
-    /* initialize cJSON item */
-    memset(item, 0, sizeof(cJSON));
+    /* initialize BC_JSON item */
+    memset(item, 0, sizeof(BC_JSON));
     UNITY_BEGIN();
     RUN_TEST(parse_number_should_parse_zero);
     RUN_TEST(parse_number_should_parse_negative_integers);

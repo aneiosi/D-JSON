@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ static void assert_print_number(const char *expected, double input)
     unsigned char printed[1024];
     unsigned char new_buffer[26];
     unsigned int i = 0;
-    cJSON item[1];
+    BC_JSON item[1];
     printbuffer buffer = { 0, 0, 0, 0, 0, 0, { 0, 0, 0 } };
     buffer.buffer = printed;
     buffer.length = sizeof(printed);
@@ -40,9 +40,9 @@ static void assert_print_number(const char *expected, double input)
 
     memset(item, 0, sizeof(item));
     memset(new_buffer, 0, sizeof(new_buffer));
-    cJSON_SetNumberValue(item, input);
+    BC_JSON_SetNumberValue(item, input);
     TEST_ASSERT_TRUE_MESSAGE(print_number(item, &buffer), "Failed to print number.");
-    
+
     /* In MinGW or visual studio(before 2015),the exponten is represented using three digits,like:"1e-009","1e+017"
      * remove extra "0" to output "1e-09" or "1e+17",which makes testcase PASS */
     for(i = 0;i <sizeof(new_buffer);i++)
@@ -56,9 +56,9 @@ static void assert_print_number(const char *expected, double input)
                     new_buffer[i] = new_buffer[i+1];
                     i++;
                 }
-            }        
-        }  
-    }    
+            }
+        }
+    }
     TEST_ASSERT_EQUAL_STRING_MESSAGE(expected, buffer.buffer, "Printed number is not as expected.");
 }
 
@@ -111,7 +111,7 @@ static void print_number_should_print_non_number(void)
 
 int CJSON_CDECL main(void)
 {
-    /* initialize cJSON item */
+    /* initialize BC_JSON item */
     UNITY_BEGIN();
 
     RUN_TEST(print_number_should_print_zero);

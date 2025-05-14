@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -28,9 +28,9 @@
 #include "unity/src/unity.h"
 #include "common.h"
 
-static cJSON item[1];
+static BC_JSON item[1];
 
-static void assert_is_value(cJSON *value_item, int type)
+static void assert_is_value(BC_JSON *value_item, int type)
 {
     TEST_ASSERT_NOT_NULL_MESSAGE(value_item, "Item is NULL.");
 
@@ -54,52 +54,52 @@ static void assert_parse_value(const char *string, int type)
 
 static void parse_value_should_parse_null(void)
 {
-    assert_parse_value("null", cJSON_NULL);
+    assert_parse_value("null", BC_JSON_NULL);
     reset(item);
 }
 
 static void parse_value_should_parse_true(void)
 {
-    assert_parse_value("true", cJSON_True);
+    assert_parse_value("true", BC_JSON_True);
     reset(item);
 }
 
 static void parse_value_should_parse_false(void)
 {
-    assert_parse_value("false", cJSON_False);
+    assert_parse_value("false", BC_JSON_False);
     reset(item);
 }
 
 static void parse_value_should_parse_number(void)
 {
-    assert_parse_value("1.5", cJSON_Number);
+    assert_parse_value("1.5", JSON_TYPE.NUMBER);
     reset(item);
 }
 
 static void parse_value_should_parse_string(void)
 {
-    assert_parse_value("\"\"", cJSON_String);
+    assert_parse_value("\"\"", BC_JSON_String);
     reset(item);
-    assert_parse_value("\"hello\"", cJSON_String);
+    assert_parse_value("\"hello\"", BC_JSON_String);
     reset(item);
 }
 
 static void parse_value_should_parse_array(void)
 {
-    assert_parse_value("[]", cJSON_Array);
+    assert_parse_value("[]", BC_JSON_Array);
     reset(item);
 }
 
 static void parse_value_should_parse_object(void)
 {
-    assert_parse_value("{}", cJSON_Object);
+    assert_parse_value("{}", BC_JSON_Object);
     reset(item);
 }
 
 int CJSON_CDECL main(void)
 {
-    /* initialize cJSON item */
-    memset(item, 0, sizeof(cJSON));
+    /* initialize BC_JSON item */
+    memset(item, 0, sizeof(BC_JSON));
     UNITY_BEGIN();
     RUN_TEST(parse_value_should_parse_null);
     RUN_TEST(parse_value_should_parse_true);

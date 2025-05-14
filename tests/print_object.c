@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Copyright (c) 2009-2017 Dave Gamble and BC_JSON contributors
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ static void assert_print_object(const char * const expected, const char * const 
     unsigned char printed_unformatted[1024];
     unsigned char printed_formatted[1024];
 
-    cJSON item[1];
+    BC_JSON item[1];
 
     printbuffer formatted_buffer = { 0, 0, 0, 0, 0, 0, { 0, 0, 0 } };
     printbuffer unformatted_buffer = { 0, 0, 0, 0, 0, 0, { 0, 0, 0 } };
@@ -90,7 +90,7 @@ static void print_object_should_print_objects_with_multiple_elements(void)
 
 int CJSON_CDECL main(void)
 {
-    /* initialize cJSON item */
+    /* initialize BC_JSON item */
     UNITY_BEGIN();
 
     RUN_TEST(print_object_should_print_empty_objects);
