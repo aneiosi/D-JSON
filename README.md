@@ -1,18 +1,18 @@
-# cJSON
+# DJSON
 
-Ultralightweight JSON parser in ANSI C.
+Ultra lightweight JSON parser written in D.
 
 ## Table of contents
 * [License](#license)
 * [Usage](#usage)
-  * [Welcome to cJSON](#welcome-to-cjson)
+  * [Welcome to DJSON](#welcome-to-cjson)
   * [Building](#building)
     * [Copying the source](#copying-the-source)
     * [CMake](#cmake)
     * [Makefile](#makefile)
     * [Meson](#meson)
     * [Vcpkg](#Vcpkg)
-  * [Including cJSON](#including-cjson)
+  * [Including DJSON](#including-cjson)
   * [Data Structure](#data-structure)
   * [Working with the data structure](#working-with-the-data-structure)
     * [Basic types](#basic-types)
@@ -32,64 +32,40 @@ Ultralightweight JSON parser in ANSI C.
     * [Thread Safety](#thread-safety)
     * [Case Sensitivity](#case-sensitivity)
     * [Duplicate Object Members](#duplicate-object-members)
-  * [Enjoy cJSON!](#enjoy-cjson)
-
-## License
-
-MIT License
-
->  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
->
->  Permission is hereby granted, free of charge, to any person obtaining a copy
->  of this software and associated documentation files (the "Software"), to deal
->  in the Software without restriction, including without limitation the rights
->  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
->  copies of the Software, and to permit persons to whom the Software is
->  furnished to do so, subject to the following conditions:
->
->  The above copyright notice and this permission notice shall be included in
->  all copies or substantial portions of the Software.
->
->  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
->  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
->  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
->  THE SOFTWARE.
+  * [Enjoy DJSON!](#enjoy-cjson)
 
 ## Usage
 
-### Welcome to cJSON.
+### Welcome to DJSON.
 
-cJSON aims to be the dumbest possible parser that you can get your job done with.
+DJSON aims to be the dumbest possible parser that you can get your job done with.
 It's a single file of C, and a single header file.
 
 JSON is described best here: http://www.json.org/
 It's like XML, but fat-free. You use it to move data around, store things, or just
 generally represent your program's state.
 
-As a library, cJSON exists to take away as much legwork as it can, but not get in your way.
+As a library, DJSON exists to take away as much legwork as it can, but not get in your way.
 As a point of pragmatism (i.e. ignoring the truth), I'm going to say that you can use it
 in one of two modes: Auto and Manual. Let's have a quick run-through.
 
 I lifted some JSON from this page: http://www.json.org/fatfree.html
-That page inspired me to write cJSON, which is a parser that tries to share the same
+That page inspired me to write DJSON, which is a parser that tries to share the same
 philosophy as JSON itself. Simple, dumb, out of the way.
 
 ### Building
 
-There are several ways to incorporate cJSON into your project.
+There are several ways to incorporate DJSON into your project.
 
 #### copying the source
 
-Because the entire library is only one C file and one header file, you can just copy `cJSON.h` and `cJSON.c` to your projects source and start using it.
+Because the entire library is only one C file and one header file, you can just copy `DJSON.h` and `DJSON.c` to your projects source and start using it.
 
-cJSON is written in ANSI C (C89) in order to support as many platforms and compilers as possible.
+DJSON is written in ANSI C (C89) in order to support as many platforms and compilers as possible.
 
 #### CMake
 
-With CMake, cJSON supports a full blown build system. This way you get the most features. CMake with an equal or higher version than 2.8.5 is supported. With CMake it is recommended to do an out of tree build, meaning the compiled files are put in a directory separate from the source files. So in order to build cJSON with CMake on a Unix platform, make a `build` directory and run CMake inside it.
+With CMake, DJSON supports a full blown build system. This way you get the most features. CMake with an equal or higher version than 2.8.5 is supported. With CMake it is recommended to do an out of tree build, meaning the compiled files are put in a directory separate from the source files. So in order to build DJSON with CMake on a Unix platform, make a `build` directory and run CMake inside it.
 
 ```
 mkdir build
@@ -112,16 +88,16 @@ You can change the build process with a list of different options that you can p
 * `-DENABLE_TARGET_EXPORT=On`: Enable the export of CMake targets. Turn off if it makes problems. (on by default)
 * `-DENABLE_CUSTOM_COMPILER_FLAGS=On`: Enable custom compiler flags (currently for Clang, GCC and MSVC). Turn off if it makes problems. (on by default)
 * `-DENABLE_VALGRIND=On`: Run tests with [valgrind](http://valgrind.org). (off by default)
-* `-DENABLE_SANITIZERS=On`: Compile cJSON with [AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer) and [UndefinedBehaviorSanitizer](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html) enabled (if possible). (off by default)
+* `-DENABLE_SANITIZERS=On`: Compile DJSON with [AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer) and [UndefinedBehaviorSanitizer](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html) enabled (if possible). (off by default)
 * `-DENABLE_SAFE_STACK`: Enable the [SafeStack](https://clang.llvm.org/docs/SafeStack.html) instrumentation pass. Currently only works with the Clang compiler. (off by default)
 * `-DBUILD_SHARED_LIBS=On`: Build the shared libraries. (on by default)
 * `-DBUILD_SHARED_AND_STATIC_LIBS=On`: Build both shared and static libraries. (off by default)
 * `-DCMAKE_INSTALL_PREFIX=/usr`: Set a prefix for the installation.
 * `-DENABLE_LOCALES=On`: Enable the usage of localeconv method. ( on by default )
 * `-DCJSON_OVERRIDE_BUILD_SHARED_LIBS=On`: Enable overriding the value of `BUILD_SHARED_LIBS` with `-DCJSON_BUILD_SHARED_LIBS`.
-* `-DENABLE_CJSON_VERSION_SO`: Enable cJSON so version. ( on by default )
+* `-DENABLE_CJSON_VERSION_SO`: Enable DJSON so version. ( on by default )
 
-If you are packaging cJSON for a distribution of Linux, you would probably take these steps for example:
+If you are packaging DJSON for a distribution of Linux, you would probably take these steps for example:
 ```
 mkdir build
 cd build
@@ -136,7 +112,7 @@ On Windows CMake is usually used to create a Visual Studio solution file by runn
 
 **NOTE:** This Method is deprecated. Use CMake if at all possible. Makefile support is limited to fixing bugs.
 
-If you don't have CMake available, but still have GNU make. You can use the makefile to build cJSON:
+If you don't have CMake available, but still have GNU make. You can use the makefile to build DJSON:
 
 Run this command in the directory with the source code and it will automatically compile static and shared libraries and a little test program (not the full test suite).
 
@@ -165,7 +141,7 @@ example = executable(
 
 #### Vcpkg
 
-You can download and install cJSON using the [vcpkg](https://github.com/Microsoft/vcpkg) dependency manager:
+You can download and install DJSON using the [vcpkg](https://github.com/Microsoft/vcpkg) dependency manager:
 ```
 git clone https://github.com/Microsoft/vcpkg.git
 cd vcpkg
@@ -174,34 +150,34 @@ cd vcpkg
 vcpkg install cjson
 ```
 
-The cJSON port in vcpkg is kept up to date by Microsoft team members and community contributors. If the version is out of date, please [create an issue or pull request](https://github.com/Microsoft/vcpkg) on the vcpkg repository.
+The DJSON port in vcpkg is kept up to date by Microsoft team members and community contributors. If the version is out of date, please [create an issue or pull request](https://github.com/Microsoft/vcpkg) on the vcpkg repository.
 
-### Including cJSON
+### Including DJSON
 
-If you installed it via CMake or the Makefile, you can include cJSON like this:
+If you installed it via CMake or the Makefile, you can include DJSON like this:
 
 ```c
-#include <cjson/cJSON.h>
+#include <cjson/DJSON.h>
 ```
 
 ### Data Structure
 
-cJSON represents JSON data using the `cJSON` struct data type:
+DJSON represents JSON data using the `DJSON` struct data type:
 
 ```c
-/* The cJSON structure: */
-typedef struct cJSON
+/* The DJSON structure: */
+typedef struct DJSON
 {
-    struct cJSON *next;
-    struct cJSON *prev;
-    struct cJSON *child;
+    struct DJSON *next;
+    struct DJSON *prev;
+    struct DJSON *child;
     int type;
     char *valuestring;
     /* writing to valueint is DEPRECATED, use cJSON_SetNumberValue instead */
     int valueint;
     double valuedouble;
     char *string;
-} cJSON;
+} DJSON;
 ```
 
 An item of this type represents a JSON value. The type is stored in `type` as a bit-flag (**this means that you cannot find out the type by just comparing the value of `type`**).
@@ -216,9 +192,9 @@ The type can be one of the following:
 * `cJSON_NULL` (check with `cJSON_IsNull`): Represents a `null` value.
 * `cJSON_Number` (check with `cJSON_IsNumber`): Represents a number value. The value is stored as a double in `valuedouble` and also in `valueint`. If the number is outside of the range of an integer, `INT_MAX` or `INT_MIN` are used for `valueint`.
 * `cJSON_String` (check with `cJSON_IsString`): Represents a string value. It is stored in the form of a zero terminated string in `valuestring`.
-* `cJSON_Array` (check with `cJSON_IsArray`): Represent an array value. This is implemented by pointing `child` to a linked list of `cJSON` items that represent the values in the array. The elements are linked together using `next` and `prev`, where the first element has `prev.next == NULL` and the last element `next == NULL`.
+* `cJSON_Array` (check with `cJSON_IsArray`): Represent an array value. This is implemented by pointing `child` to a linked list of `DJSON` items that represent the values in the array. The elements are linked together using `next` and `prev`, where the first element has `prev.next == NULL` and the last element `next == NULL`.
 * `cJSON_Object` (check with `cJSON_IsObject`): Represents an object value. Objects are stored same way as an array, the only difference is that the items in the object store their keys in `string`.
-* `cJSON_Raw` (check with `cJSON_IsRaw`): Represents any kind of JSON that is stored as a zero terminated array of characters in `valuestring`. This can be used, for example, to avoid printing the same static JSON over and over again to save performance. cJSON will never create this type when parsing. Also note that cJSON doesn't check if it is valid JSON.
+* `cJSON_Raw` (check with `cJSON_IsRaw`): Represents any kind of JSON that is stored as a zero terminated array of characters in `valuestring`. This can be used, for example, to avoid printing the same static JSON over and over again to save performance. DJSON will never create this type when parsing. Also note that DJSON doesn't check if it is valid JSON.
 
 Additionally there are the following two flags:
 
@@ -228,9 +204,9 @@ Additionally there are the following two flags:
 ### Working with the data structure
 
 For every value type there is a `cJSON_Create...` function that can be used to create an item of that type.
-All of these will allocate a `cJSON` struct that can later be deleted with `cJSON_Delete`.
-Note that you have to delete them at some point, otherwise you will get a memory leak.  
-**Important**: If you have added an item to an array or an object already, you **mustn't** delete it with `cJSON_Delete`. Adding it to an array or object transfers its ownership so that when that array or object is deleted, 
+All of these will allocate a `DJSON` struct that can later be deleted with `cJSON_Delete`.
+Note that you have to delete them at some point, otherwise you will get a memory leak.
+**Important**: If you have added an item to an array or an object already, you **mustn't** delete it with `cJSON_Delete`. Adding it to an array or object transfers its ownership so that when that array or object is deleted,
 it gets deleted as well. You also could use `cJSON_SetValuestring` to change a `cJSON_String`'s `valuestring`, and you needn't to free the previous `valuestring` manually.
 
 #### Basic types
@@ -262,7 +238,7 @@ Because an array is stored as a linked list, iterating it via index is inefficie
 
 You can create an empty object with `cJSON_CreateObject`. `cJSON_CreateObjectReference` can be used to create an object that doesn't "own" its content, so its content doesn't get deleted by `cJSON_Delete`.
 
-To add items to an object, use `cJSON_AddItemToObject`. Use `cJSON_AddItemToObjectCS` to add an item to an object with a name that is a constant or reference (key of the item, `string` in the `cJSON` struct), so that it doesn't get freed by `cJSON_Delete`.
+To add items to an object, use `cJSON_AddItemToObject`. Use `cJSON_AddItemToObjectCS` to add an item to an object with a name that is a constant or reference (key of the item, `string` in the `DJSON` struct), so that it doesn't get freed by `cJSON_Delete`.
 Using `cJSON_AddItemReferenceToArray` an element can be added as a reference to another object, array or string. This means that `cJSON_Delete` will not delete that items `child` or `valuestring` properties, so no double frees are occurring if they are already used elsewhere.
 
 If you want to take an item out of an object, use `cJSON_DetachItemFromObjectCaseSensitive`, it will return the detached item, so be sure to assign it to a pointer, otherwise you will have a memory leak.
@@ -277,23 +253,23 @@ If you want to access an item in an object, use `cJSON_GetObjectItemCaseSensitiv
 
 To iterate over an object, you can use the `cJSON_ArrayForEach` macro the same way as for arrays.
 
-cJSON also provides convenient helper functions for quickly creating a new item and adding it to an object, like `cJSON_AddNullToObject`. They return a pointer to the new item or `NULL` if they failed.
+DJSON also provides convenient helper functions for quickly creating a new item and adding it to an object, like `cJSON_AddNullToObject`. They return a pointer to the new item or `NULL` if they failed.
 
 ### Parsing JSON
 
 Given some JSON in a zero terminated string, you can parse it with `cJSON_Parse`.
 
 ```c
-cJSON *json = cJSON_Parse(string);
+DJSON *json = cJSON_Parse(string);
 ```
 
 Given some JSON in a string (whether zero terminated or not), you can parse it with `cJSON_ParseWithLength`.
 
 ```c
-cJSON *json = cJSON_ParseWithLength(string, buffer_length);
+DJSON *json = cJSON_ParseWithLength(string, buffer_length);
 ```
 
-It will parse the JSON and allocate a tree of `cJSON` items that represents it. Once it returns, you are fully responsible for deallocating it after use with `cJSON_Delete`.
+It will parse the JSON and allocate a tree of `DJSON` items that represents it. Once it returns, you are fully responsible for deallocating it after use with `cJSON_Delete`.
 
 The allocator used by `cJSON_Parse` is `malloc` and `free` by default but can be changed (globally) with `cJSON_InitHooks`.
 
@@ -307,7 +283,7 @@ If you want more options giving buffer length, use `cJSON_ParseWithLengthOpts(co
 
 ### Printing JSON
 
-Given a tree of `cJSON` items, you can print them as a string using `cJSON_Print`.
+Given a tree of `DJSON` items, you can print them as a string using `cJSON_Print`.
 
 ```c
 char *string = cJSON_Print(json);
@@ -317,9 +293,9 @@ It will allocate a string and print a JSON representation of the tree into it. O
 
 `cJSON_Print` will print with whitespace for formatting. If you want to print without formatting, use `cJSON_PrintUnformatted`.
 
-If you have a rough idea of how big your resulting string will be, you can use `cJSON_PrintBuffered(const cJSON *item, int prebuffer, cJSON_bool fmt)`. `fmt` is a boolean to turn formatting with whitespace on and off. `prebuffer` specifies the first buffer size to use for printing. `cJSON_Print` currently uses 256 bytes for its first buffer size. Once printing runs out of space, a new buffer is allocated and the old gets copied over before printing is continued.
+If you have a rough idea of how big your resulting string will be, you can use `cJSON_PrintBuffered(const DJSON *item, int prebuffer, cJSON_bool fmt)`. `fmt` is a boolean to turn formatting with whitespace on and off. `prebuffer` specifies the first buffer size to use for printing. `cJSON_Print` currently uses 256 bytes for its first buffer size. Once printing runs out of space, a new buffer is allocated and the old gets copied over before printing is continued.
 
-These dynamic buffer allocations can be completely avoided by using `cJSON_PrintPreallocated(cJSON *item, char *buffer, const int length, const cJSON_bool format)`. It takes a buffer to a pointer to print to and its length. If the length is reached, printing will fail and it returns `0`. In case of success, `1` is returned. Note that you should provide 5 bytes more than is actually needed, because cJSON is not 100% accurate in estimating if the provided memory is enough.
+These dynamic buffer allocations can be completely avoided by using `cJSON_PrintPreallocated(DJSON *item, char *buffer, const int length, const cJSON_bool format)`. It takes a buffer to a pointer to print to and its length. If the length is reached, printing will fail and it returns `0`. In case of success, `1` is returned. Note that you should provide 5 bytes more than is actually needed, because DJSON is not 100% accurate in estimating if the provided memory is enough.
 
 ### Example
 
@@ -360,14 +336,14 @@ char *create_monitor(void)
         {3840, 2160}
     };
     char *string = NULL;
-    cJSON *name = NULL;
-    cJSON *resolutions = NULL;
-    cJSON *resolution = NULL;
-    cJSON *width = NULL;
-    cJSON *height = NULL;
+    DJSON *name = NULL;
+    DJSON *resolutions = NULL;
+    DJSON *resolution = NULL;
+    DJSON *width = NULL;
+    DJSON *height = NULL;
     size_t index = 0;
 
-    cJSON *monitor = cJSON_CreateObject();
+    DJSON *monitor = cJSON_CreateObject();
     if (monitor == NULL)
     {
         goto end;
@@ -437,10 +413,10 @@ char *create_monitor_with_helpers(void)
         {3840, 2160}
     };
     char *string = NULL;
-    cJSON *resolutions = NULL;
+    DJSON *resolutions = NULL;
     size_t index = 0;
 
-    cJSON *monitor = cJSON_CreateObject();
+    DJSON *monitor = cJSON_CreateObject();
 
     if (cJSON_AddStringToObject(monitor, "name", "Awesome 4K") == NULL)
     {
@@ -455,7 +431,7 @@ char *create_monitor_with_helpers(void)
 
     for (index = 0; index < (sizeof(resolution_numbers) / (2 * sizeof(int))); ++index)
     {
-        cJSON *resolution = cJSON_CreateObject();
+        DJSON *resolution = cJSON_CreateObject();
 
         if (cJSON_AddNumberToObject(resolution, "width", resolution_numbers[index][0]) == NULL)
         {
@@ -490,11 +466,11 @@ In this example we will parse a JSON in the above format and check if the monito
 /* return 1 if the monitor supports full hd, 0 otherwise */
 int supports_full_hd(const char * const monitor)
 {
-    const cJSON *resolution = NULL;
-    const cJSON *resolutions = NULL;
-    const cJSON *name = NULL;
+    const DJSON *resolution = NULL;
+    const DJSON *resolutions = NULL;
+    const DJSON *name = NULL;
     int status = 0;
-    cJSON *monitor_json = cJSON_Parse(monitor);
+    DJSON *monitor_json = cJSON_Parse(monitor);
     if (monitor_json == NULL)
     {
         const char *error_ptr = cJSON_GetErrorPtr();
@@ -515,8 +491,8 @@ int supports_full_hd(const char * const monitor)
     resolutions = cJSON_GetObjectItemCaseSensitive(monitor_json, "resolutions");
     cJSON_ArrayForEach(resolution, resolutions)
     {
-        cJSON *width = cJSON_GetObjectItemCaseSensitive(resolution, "width");
-        cJSON *height = cJSON_GetObjectItemCaseSensitive(resolution, "height");
+        DJSON *width = cJSON_GetObjectItemCaseSensitive(resolution, "width");
+        DJSON *height = cJSON_GetObjectItemCaseSensitive(resolution, "height");
 
         if (!cJSON_IsNumber(width) || !cJSON_IsNumber(height))
         {
@@ -543,48 +519,42 @@ Note that there are no NULL checks except for the result of `cJSON_Parse` becaus
 
 #### Zero Character
 
-cJSON doesn't support strings that contain the zero character `'\0'` or `\u0000`. This is impossible with the current API because strings are zero terminated.
+DJSON doesn't support strings that contain the zero character `'\0'` or `\u0000`. This is impossible with the current API because strings are zero terminated.
 
 #### Character Encoding
 
-cJSON only supports UTF-8 encoded input. In most cases it doesn't reject invalid UTF-8 as input though, it just propagates it through as is. As long as the input doesn't contain invalid UTF-8, the output will always be valid UTF-8.
-
-#### C Standard
-
-cJSON is written in ANSI C (or C89, C90). If your compiler or C library doesn't follow this standard, correct behavior is not guaranteed.
-
-NOTE: ANSI C is not C++ therefore it shouldn't be compiled with a C++ compiler. You can compile it with a C compiler and link it with your C++ code however. Although compiling with a C++ compiler might work, correct behavior is not guaranteed.
+DJSON only supports UTF-8 encoded input. In most cases it doesn't reject invalid UTF-8 as input though, it just propagates it through as is. As long as the input doesn't contain invalid UTF-8, the output will always be valid UTF-8.
 
 #### Floating Point Numbers
 
-cJSON does not officially support any `double` implementations other than IEEE754 double precision floating point numbers. It might still work with other implementations but bugs with these will be considered invalid.
+DJSON does not officially support any `double` implementations other than IEEE754 double precision floating point numbers. It might still work with other implementations but bugs with these will be considered invalid.
 
-The maximum length of a floating point literal that cJSON supports is currently 63 characters.
+The maximum length of a floating point literal that DJSON supports is currently 63 characters.
 
 #### Deep Nesting Of Arrays And Objects
 
-cJSON doesn't support arrays and objects that are nested too deeply because this would result in a stack overflow. To prevent this cJSON limits the depth to `CJSON_NESTING_LIMIT` which is 1000 by default but can be changed at compile time.
+DJSON doesn't support arrays and objects that are nested too deeply because this would result in a stack overflow. To prevent this DJSON limits the depth to `CJSON_NESTING_LIMIT` which is 1000 by default but can be changed at compile time.
 
 #### Thread Safety
 
-In general cJSON is **not thread safe**.
+In general DJSON is **not thread safe**.
 
 However it is thread safe under the following conditions:
 
 * `cJSON_GetErrorPtr` is never used (the `return_parse_end` parameter of `cJSON_ParseWithOpts` can be used instead)
-* `cJSON_InitHooks` is only ever called before using cJSON in any threads.
-* `setlocale` is never called before all calls to cJSON functions have returned.
+* `cJSON_InitHooks` is only ever called before using DJSON in any threads.
+* `setlocale` is never called before all calls to DJSON functions have returned.
 
 #### Case Sensitivity
 
-When cJSON was originally created, it didn't follow the JSON standard and didn't make a distinction between uppercase and lowercase letters. If you want the correct, standard compliant, behavior, you need to use the `CaseSensitive` functions where available.
+When DJSON was originally created, it didn't follow the JSON standard and didn't make a distinction between uppercase and lowercase letters. If you want the correct, standard compliant, behavior, you need to use the `CaseSensitive` functions where available.
 
 #### Duplicate Object Members
 
-cJSON supports parsing and printing JSON that contains objects that have multiple members with the same name. `cJSON_GetObjectItemCaseSensitive` however will always only return the first one.
+DJSON supports parsing and printing JSON that contains objects that have multiple members with the same name. `cJSON_GetObjectItemCaseSensitive` however will always only return the first one.
 
-# Enjoy cJSON!
+# Enjoy DJSON!
 
 - Dave Gamble (original author)
 - Max Bruckner and Alan Wang (current maintainer)
-- and the other [cJSON contributors](CONTRIBUTORS.md)
+- and the other [DJSON contributors](CONTRIBUTORS.md)

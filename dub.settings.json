@@ -1,0 +1,7 @@
+{
+	"defaultCompiler": "ldc",
+	"defaultEnvironments": {
+		"LOG_LEVEL": "INFO",
+		"D_LIBS": "$HOME/.local/src/Dlang"
+	}
+}
